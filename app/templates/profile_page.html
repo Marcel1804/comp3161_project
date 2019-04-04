@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1>Profile</h1>
+<p>This webpage is a demonstration website security.</p>
+  <div class="border">
+     <h4>{{name}}</h4>
+    <div class="colour pos center">
+        <img src="{{url_for('static',filename='./pic.jpg')}}" alt="profile picture" style="width:200px;height:200px;">
+        <h2>Moot: "Keep moving forward"</h2>
+    </div>
+    
+    <div class="info  center pos">
+        <p> I am third years student in department of commputing.
+        <br>My interests are game deveploment, web deveploment, Network security and ect...</p>
+    </div>
+    
+    <div class="center spacing padding" >
+      7 100 250
+    </div>
+    
+    <div class=" info center space">
+      Posts Following Followers
+    </div>
+    
+    <div class="center padding">
+        <button class="colour"> Follow</button>
+    </div>
+    
+    </div>
+{% endblock %}

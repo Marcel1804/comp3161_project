@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <div class="center">
+        <h1>Website Security Demo</h1>
+    </div>
+    
+    {% include 'flash_messages.html' %}
+    <p class="lead">There are several challenges face in website security here are a few:</p>
+    <div>
+    <lo>
+        <li>
+            SQL INJECTIONS
+        </li>
+        
+        <li>
+            CROSS SITE SCRIPTING(XSS)
+        </li>
+        <li>
+            BROKEN AUTHENTICATION & SESSION MANAGEMENT
+        </li>
+        <li>
+            INSECURE DIRECT OBJECT REFERENCES
+        </li>
+        <li>
+             SECURITY MISCONFIGURATION
+        </li>
+        <li>
+             CROSS-SITE REQUEST FORGERY (CSRF)
+        </li>
+     </lo>
+     </div>
+     <br>
+     <div>
+     <h6>SQL INJECTIONS </h6>
+         <p>
+              SQL injection is a type of web application security vulnerability in which an attacker attempts to use application code to access or corrupt database content.
+              <br> If successful, this allows the attacker to create, read, update, alter, or delete data stored in the back-end database.
+              <br>SQL injection is one of the most prevalent types of web application security vulnerabilities. 
+          </p>
+      <h6>CROSS SITE SCRIPTING(XSS) </h6>
+          <p>
+                Cross-site scripting (XSS) targets an application's users by injecting code, usually a client-side script such as JavaScript, into a web application's output.
+                <br> The concept of XSS is to manipulate client-side scripts of a web application to execute in the manner desired by the attacker.
+                <br> XSS allows attackers to execute scripts in the victim's browser which can hijack user sessions, deface websites, or redirect the user to malicious sites.
+          </p>
+      <h6>BROKEN AUTHENTICATION & SESSION MANAGEMENT </h6>
+          <p>
+                Broken authentication and session management encompass several security issues, all of them having to do with maintaining the identity of a user.
+                <br> If authentication credentials and session identifiers are not protected at all times an attacker can hijack an active session and assume the identity of a user.
+          </p>
+      <h6>INSECURE DIRECT OBJECT REFERENCES </h6>
+          <p>
+                Security misconfiguration encompasses several types of vulnerabilities all centered on a lack of maintenance or a lack of attention to the web application configuration.
+                <br> A secure configuration must be defined and deployed for the application, frameworks, application server, web server, database server, and platform.
+                <br>Security misconfiguration gives hackers access to private data or features and can result in a complete system compromise
+          </p>
+      <h6>SECURITY MISCONFIGURATION </h6>
+          <p>
+                Insecure direct object reference is when a web application exposes a reference to an internal implementation object.
+                <br> Internal implementation objects include files, database records, directories, and database keys.
+                <br> When an application exposes a reference to one of these objects in a URL hackers can manipulate it to gain access to a user's personal data.
+         </p>
+     <h6> CROSS-SITE REQUEST FORGERY (CSRF) </h6>
+         <p>
+                Cross-Site Request Forgery (CSRF) is a malicious attack where a user is tricked into performing an action he or she didn't intend to do.
+                <br> A third-party website will send a request to a web application that a user is already authenticated against (e.g. their bank).
+                <br>The attacker can then access functionality via the victim's already authenticated browser. Targets include web applications like social media, in browser email clients, online banking, and web interfaces for network devices.
+         </p>
+      <h6>REMINDER</h6>
+         <p>
+              Don't get caught with your guard down.
+         </p>
+     </div>
+ {% endblock %}
