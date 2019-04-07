@@ -1,10 +1,8 @@
 import mysql.connector
 
-
+#attributes needed for the specification of columns in a table 
 columns = {
     "creditCard": ("(", "acc_id,", "card_num",")"),
-    "test": ("(", "id,", "username,", "password,", "type", ")"),
-    "managers": ("(", "person_name,", "manager_name", ")"),
     "customer": ("(", "cus_id," ,"fname,","lname,", "age,","gender,", "date_of_birth,", "street,", "parish,", "telephone", ")"),
     "customerAccount": ("(", "acc_id,", "cus_id", ")"),
     "account": ("(", "acc_id,", "email,", "password,", "created_on", ")" ),
@@ -42,7 +40,7 @@ class databaseGenerator:
         self.mycursor.execute(strstatement)
 
 
-    #primkey is the primary key of the value to be removed
+    #key is the identifier of the value to be removed
     #name is the name of the table to removed the record form
     #coltocompare is the name of the column to compare primkey against
     #NB: primkey must be a quoted string if datatype is varchar 
@@ -60,6 +58,10 @@ class databaseGenerator:
         self.mycursor.execute(strstatement)
 
     #key must be quoted string if the datatype in the database is varchar or date
+    #tableName - the name of the table to be updated
+    # columntoupdate - name of column to be updated
+    # selection - is the column to be selected
+    #key - the unique identifier of the record
     #NT
     def showTableCondition(self, tableName, coltocompare, key, selection):
         strstatement = ""
@@ -67,12 +69,20 @@ class databaseGenerator:
         self.mycursor.execute(strstatement)
 
     #key must be quoted string if the datatype in the database is varchar or date
+    #tableName - the name of the table to be updated
+    # columntoupdate - name of column to be updated
+    # value - is the new value of the column
+    #key - the unique identifier of the record
+    #idfn - the column to compare to key in order to find specified record
     #NT
     def updateRecord(self, tableName, columntoupdate, key, value, idfn ):
         strstatement = ""
         strstatement = "UPDATE {} SET {} = {} WHERE {} = {};".format(tableName, columntoupdate, value, idfn, key )
         self.mycursor.execute(strstatement)
 
+    #tableName - the name of the table to be updated
+    # column - name of column to be updated
+    # value - is the new value of the column 
     #NT
     def updateTable(self, tableName, column, value):
         strstatement = ""
@@ -83,9 +93,10 @@ class databaseGenerator:
 
 if __name__ == "__main__":
     db = None
-    db = databaseGenerator("Wow", columns)
+    db = databaseGenerator("compustore", columns)
+    #testing code
     #db.addRecord(["\"1234\"", "\"hviujk\"", "\"gdfku\"","\"hjfgf\""], "test")
     #db.addRecord(["\"john\"", "\"samuels\""], "managers")
     #n.addRecord([7564, 657437,], "creditcard")
-    db.removeRecord("\"Luke\"", "managers", "manager_name")
+    #db.removeRecord("\"Luke\"", "managers", "manager_name")
 
