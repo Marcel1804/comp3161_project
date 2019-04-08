@@ -9,5 +9,5 @@ Thumbs.db
 .venv/
 venv/
 
-# PyCharm and other IntelliJ products
+# PyCharm
 .idea

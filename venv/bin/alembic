@@ -1,4 +1,4 @@
-#!/home/niikou/Desktop/comp3161/venv/bin/python3.5
+#!/home/ubuntu/workspace/venv/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'alembic==1.0.8','console_scripts','alembic'
 __requires__ = 'alembic==1.0.8'
 import sys

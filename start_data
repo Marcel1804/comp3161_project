@@ -1,2 +1,58 @@
 sudo service postgresql start 
 !--{{url_for('https://www.google.com/webmasters/tools/home?hl=en')}}-->
+
+
+</li>
+      </li><li class="nav-item">
+        <a class="nav-link" href="{{ url_for('profile_page') }}">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+      </li>
+
+<li class="nav-item visit">
+        <a class="nav-link" href="{{ url_for('admin') }}">Administrator page</a>
+      </li>
+      {% if current_user.is_authenticated %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          </li>
+      {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+          </li>
+      {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('signup_page')}}">Signup</a>
+      </li>
+      
+ cur.execute("INSERT INTO MyUsers(firstName, lastName) VALUES (%s, %s)", (firstName, lastName))
+
+
+#SQLALCHEMY_DATABASE_URI = 'mysql://niikou:@localhost/compustore'
+
+# SQLALCHEMY_BINDS = {
+#     'branch1': 'mysql://niikou:@localhost/branch1.db',
+#     'branch2': 'mysql://niikou:@localhost/branch2.db',
+#     ('branch3': 'mysql://niikou:@localhost/branch3.db'
+# }
+
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True # added just to suppress a warning
+# db = SQLAlchemy(app)
+
+if request.method == "POST":
+        details = request.form
+        firstName = details['fname']
+        lastName = details['lname']
+mysql.connection.commit()
+        cur.close()
+return 'success'
+
+<form method="POST" action="">
+            <center>
+            <H1>Enter your details </H1> <br>
+            First Name <input type = "text" name= "fname" /> <br>
+            Last Name <input type = "text" name = "lname" /> <br>
+            <input type = "submit">
+            </center>
+            </form>

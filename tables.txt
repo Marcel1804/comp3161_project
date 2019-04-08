@@ -1,33 +1,31 @@
 ----CompuStore Database
 
-customer(cus_id, fname, lname, age, gender, date_of_birth, street, city, parish, telephone)
-customerAccount(acc_id, cus_id)
-account(acc_id, email, password, created_on)
-creditCard(acc_id, card_num)
-creditCardDetails(card_num, expiration_date, cvc, street, city, parish)
+CustomerAccount(acc_id, email, password,  fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
 
-branch(br_id, name, street, city, parish, telephone)
-laptop(serial_num, model, brand, description, image)
+CreditCardDetails(card_num, expiration_month, expiration_year, billing_street, billing_city, billing_parish)
+CustomerCreditCard(acc_id, card_num)
 
-purchaseItem(pur_id, acc_id, br_id, serial_num, quantity, cost, date_purchased)
+Branch(br_id, name, street, city, parish, telephone)
+Laptop(serial_num, name, model, brand, description, picture, price)
 
-cus_cart(acc_id, cart_id)
-addToCart(cart_id, pur_id, date_added)
+CustomerCart(acc_id, item_count, value)
 
-transaction(cart_id, track_num, total_cost, date_made)
-receipt(track_num, invoice)
+CartItems(acc_id, serial_num, br_id, quantity, cost, purchasing, date_added)
 
-writeReview(acc_id, serial_num, rev_text, date_written)
+Receipt(track_num, invoice)
+Checkout(acc_id, track_num, total_cost, transaction_date)
 
-warehouse(wh_id, street, city, parish, telephone)
-stores(wh_id, serial_num, quantity)
+PurchasedItem(pur_id, acc_id, serial_num, br_id, quantity, cost, date_purchased)
 
+WriteReview(acc_id, serial_num, rev_text, date_written)
 
+Warehouse(wh_id, street, city, parish, telephone)
+Stores(wh_id, serial_num, quantity)
 
 
 ---Branch databases (this schema will be replicated for 3 different branch databases)
 
-sells(serial_num, price, quantity)
+ItemsInStock(serial_num, quantity)
 
 
 

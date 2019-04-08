@@ -1,4 +1,4 @@
-#!/home/niikou/Desktop/comp3161/venv/bin/python3.5
+#!/home/ubuntu/workspace/venv/bin/python
 
 # -*- coding: utf-8 -*-
 import re

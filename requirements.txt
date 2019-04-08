@@ -1,14 +1,19 @@
 # ----------------------
 # Flask
 # ----------------------
-flask
+Flask
 Flask-WTF
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Script
 Flask-Login
+MySQL
+flask_mysqldb
+
 
 # ----------------------
 # Production Server
 # ----------------------
 gunicorn
+
+
