@@ -2,24 +2,21 @@ import mysql.connector
 
 #attributes needed for the specification of columns in a table 
 columns = {
-    "creditCard": ("(", "acc_id,", "card_num",")"),
-    "customer": ("(", "cus_id," ,"fname,","lname,", "age,","gender,", "date_of_birth,", "street,", "parish,", "telephone", ")"),
-    "customerAccount": ("(", "acc_id,", "cus_id", ")"),
-    "account": ("(", "acc_id,", "email,", "password,", "created_on", ")" ),
-    "creditCardDetails":("(","card_num,", "expiration_date,", "cvc,", "street,", "city,", "parish",")"),
-    "branch":("(","br_id,", "name,","street,", "city,", "parish,", "telephone",")"),
-    "laptop":("(","serial_num,", "model,", "brand,", "description,", "image",")"),
-    "purchase":("(","acc_id,","br_id,", "serial_num,", "date_made,", "quantity,", "cost", ")"),
-    "cus_cart":("(","scart_id,", "name", ")"),
-    "addTo":("(","scart_id,", "acc_id,", "br_id,", "serial_num,", "date_made", ")"),
-    "transaction":("(","scart_id,", "track_num,", "total_cost,", "date_made",")"),
-    "receipt":("(","track_num,", "invoice", ")"),
-    "review":("(","rev_id,","rev_text",")"),
-    "writeReview":("(","rev_id,","acc_id,", "serial_num,", "date_written", ")"),
-    "warehouse":("(","wh_id,", "street,", "city,", "parish,", "telephone", ")"),
-    "stores":("(","wh_id,","serial_num,", "quanitity", ")"),
-    "sells":("(","serial_num,", "price,", "quantity", ")")
-     
+    "CustomerCreditCard": ("(", "acc_id,", "card_num",")"),
+    "CustomerAccount": ("(", "acc_id," ,"email,","password,","fname,","lname,", "gender,","date_of_birth,", "street,", "city,", "parish,", "telephone,","created_on" ")"),
+    "CreditCardDetails":("(","card_num,", "expiration_month,","expiration_year", "billing_street,", "billing_city,", "billing_parish",")"),
+    "Branch":("(","br_id,", "name,","street,", "city,", "parish,", "telephone",")"),
+    "Laptop":("(","serial_num,", "name,", "model,", "brand,", "description,", "picture,","price",")"),
+    "PurchaseItems":("(","pur_id,","acc_id,", "serial_num,","br_id,", "quantity,", "cost,", "date_purchased", ")"),
+    "CustomerCart":("(","acc_id,", "item_count,","value", ")"),
+    "CartItems": ("(", "acc_id,", "serial_num,", "br_id,", "quantity,", "cost,", "purchasing,", "date_added", ")"),
+    "Receipt":("(","track_num,", "invoice", ")"),
+    "Checkout": ("(", "acc_id,", "track_num,", "total_cost,", "transaction_date", ")"), 
+    "WriteReview":("(","acc_id,","serial_num,", "rev_text,", "date_written", ")"),
+    "Warehouse":("(","wh_id,", "street,", "city,", "parish,", "telephone", ")"),
+    "Stores":("(","wh_id,","serial_num,", "quanitity", ")"),
+    "ItemInStock": ("(", "serial_num,", "quantity", ")"),
+    "ItemSold": ("(", "serial_num,", "amount", ")")
 }
 
 
@@ -108,6 +105,46 @@ class databaseGenerator:
             self.mycursor.execute(strstatement)
         except:
             print("Please check input for updateTable")
+
+
+    def orderByPrice(self, ordr):
+        try:
+            strstatement = "CALL orderByPrice(\"{}\");".format(ordr)
+            self.mycursor.execute(strstatement)
+            records = self.mycursor.fetchall()
+            return records
+        except:
+            print("Please check input data type for orderByPrice")
+
+    
+    def getByName(self, name):
+        try:
+            strstatement = "CALL getByName(\"{}\");".format(name)
+            self.mycursor.execute(strstatement)
+            records = self.mycursor.fetchall()
+            return records
+        except:
+            print("Please check input data type for getByName")
+
+
+    def getByModel(self, model):
+        try:
+            strstatement = "CALL getByModel(\"{}\");".format(model)
+            self.mycursor.execute(strstatement)
+            records = self.mycursor.fetchall()
+            return records
+        except:
+            print("Please check input data type for getByModel")
+
+
+    def getByBrand(self, brand):
+        try:
+            strstatement = "CALL getByBrand(\"{}\");".format(brand)
+            self.mycursor.execute(strstatement)
+            records = self.mycursor.fetchall()
+            return records
+        except:
+            print("Please check input data type for getByBrand")
 
     #destructor closes database and connection
     def __del__(self): 
