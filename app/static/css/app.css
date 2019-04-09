@@ -72,3 +72,16 @@ button {
 .pos{
   position: relative;
 }
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+
+.s{width: 20px;}
+
+.pad{
+    padding: 0;
+     margin: 0;
+}

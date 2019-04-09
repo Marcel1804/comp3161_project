@@ -220,8 +220,19 @@ create table Stores(
 create database Branch1;
 use Branch1;
 
-/* ItemInStock(serial_num, quantity) */
-create table ItemInStock(
+/* Laptop(serial_num, name, model, brand, description, picture, price) */
+create table Laptop(
+	serial_num varchar(100),
+	name text,
+	model varchar(100),
+	brand varchar(100),
+	description text,
+	picture blob,
+	primary key(serial_num) 
+);
+
+/* ItemsInStock(serial_num, quantity) */
+create table ItemsInStock(
 	serial_num varchar(100),
 	quantity int,
 	primary key(serial_num)
@@ -231,13 +242,13 @@ create table ItemSold(
 	serial_num varchar(100),
 	amount int,
 	primary key(serial_num),
-	foreign key(serial_num) references ItemInStock(serial_num) on DELETE cascade on UPDATE cascade
+	foreign key(serial_num) references ItemsInStock(serial_num) on DELETE cascade on UPDATE cascade
 );
 
 DELIMITER //
 	CREATE PROCEDURE purchaseItem(IN serial varchar(100), amt int)
 	BEGIN
-	UPDATE ItemInStock SET quantity = (quantity - amt) WHERE serial_num = serial;
+	UPDATE ItemsInStock SET quantity = (quantity - amt) WHERE serial_num = serial;
 	IF EXISTS (SELECT serial_num FROM ItemSold WHERE serial_num = serial LIMIT 1) THEN
 		UPDATE ItemSold SET amount = (amount + amt) WHERE serial_num = serial;
 	ELSE
@@ -252,8 +263,19 @@ DELIMITER ;
 create database Branch2;
 use Branch2;
 
-/* ItemInStock(serial_num, quantity) */
-create table ItemInStock(
+/* Laptop(serial_num, name, model, brand, description, picture, price) */
+create table Laptop(
+	serial_num varchar(100),
+	name text,
+	model varchar(100),
+	brand varchar(100),
+	description text,
+	picture blob,
+	primary key(serial_num) 
+);
+
+/* ItemsInStock(serial_num, quantity) */
+create table ItemsInStock(
 	serial_num varchar(100),
 	quantity int,
 	primary key(serial_num)
@@ -263,13 +285,13 @@ create table ItemSold(
 	serial_num varchar(100),
 	amount int,
 	primary key(serial_num),
-	foreign key(serial_num) references ItemInStock(serial_num) on DELETE cascade on UPDATE cascade
+	foreign key(serial_num) references ItemsInStock(serial_num) on DELETE cascade on UPDATE cascade
 );
 
 DELIMITER //
 	CREATE PROCEDURE purchaseItem(IN serial varchar(100), amt int)
 	BEGIN
-	UPDATE ItemInStock SET quantity = (quantity - amt) WHERE serial_num = serial;
+	UPDATE ItemsInStock SET quantity = (quantity - amt) WHERE serial_num = serial;
 	IF EXISTS (SELECT serial_num FROM ItemSold WHERE serial_num = serial LIMIT 1) THEN
 		UPDATE ItemSold SET amount = (amount + amt) WHERE serial_num = serial;
 	ELSE
@@ -284,8 +306,19 @@ DELIMITER ;
 create database Branch3;
 use Branch3;
 
-/* ItemInStock(serial_num, quantity) */
-create table ItemInStock(
+/* Laptop(serial_num, name, model, brand, description, picture, price) */
+create table Laptop(
+	serial_num varchar(100),
+	name text,
+	model varchar(100),
+	brand varchar(100),
+	description text,
+	picture blob,
+	primary key(serial_num) 
+);
+
+/* ItemsInStock(serial_num, quantity) */
+create table ItemsInStock(
 	serial_num varchar(100),
 	quantity int,
 	primary key(serial_num)
@@ -295,13 +328,13 @@ create table ItemSold(
 	serial_num varchar(100),
 	amount int,
 	primary key(serial_num),
-	foreign key(serial_num) references ItemInStock(serial_num) on DELETE cascade on UPDATE cascade
+	foreign key(serial_num) references ItemsInStock(serial_num) on DELETE cascade on UPDATE cascade
 );
 
 DELIMITER //
 	CREATE PROCEDURE purchaseItem(IN serial varchar(100), amt int)
 	BEGIN
-	UPDATE ItemInStock SET quantity = (quantity - amt) WHERE serial_num = serial;
+	UPDATE ItemsInStock SET quantity = (quantity - amt) WHERE serial_num = serial;
 	IF EXISTS (SELECT serial_num FROM ItemSold WHERE serial_num = serial LIMIT 1) THEN
 		UPDATE ItemSold SET amount = (amount + amt) WHERE serial_num = serial;
 	ELSE
