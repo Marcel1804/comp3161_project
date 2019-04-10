@@ -1,4 +1,5 @@
 from itertools import permutations
+from faker import Faker
 from random import randint
 import datetime
 import sqlGen
@@ -34,32 +35,28 @@ def phoneNumber():
     p = ''.join(p)
     return p[:3] + '-' + p[3:6] + '-' + p[6:]
 
+def generateName():
+    fake = Faker()
+    name = (fake.name()).split()
+    return name
+
+def generateAddress():
+    fake  = Faker()
+    fake = fake.address()
+    return fake 
+
 def generateCustomers():
     #f = open("customers.txt", "r")
     #n = sqlGen.databaseGenerator("CompuStore", sqlGen.columns)
     #name = permutations([1, 2, 3])
     #n.addRecord([], "CustomerAccount")
-    p = phoneNumber()
-    print(generateName(), generateName(), getGender() , p, generateDate())
+    name = generateName()
+    print(name[0], name[1], getGender() , phoneNumber(), generateDate(), generateBirthday(), generateAddress())
 
 def getGender():
     lst = ["Male", "Female"]
     return random.choice(lst)
 
-def generateName():
-    vowels = "aeiou"
-    consonants = "".join(set(string.ascii_lowercase) - set(vowels))
-    word = ""
-    l    = [5,6,7,8]
-    for i in range(random.choice(l)):
-        if i % 2 == 0:
-            word += random.choice(consonants)
-        else:
-            word += random.choice(vowels)
-        word    = list(word)
-        word[0] = word[0].upper()
-        word    = "".join(word)
-    return word
 
 if __name__ == "__main__":
     print(generateCustomers())
