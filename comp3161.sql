@@ -52,14 +52,13 @@ create table Branch(
 	primary key(br_id)
 );
 
-/* Laptop(serial_num, name, model, brand, description, picture, price) */
+/* Laptop(serial_num, model, brand, description, thumbnail, price) */
 create table Laptop(
 	serial_num varchar(100),
-	name text,
-	model varchar(100),
+	model text,
 	brand varchar(100),
 	description text,
-	picture blob,
+	thumbnail text,
 	price double(10,2),
 	primary key(serial_num) 
 );
@@ -220,14 +219,13 @@ create table Stores(
 create database Branch1;
 use Branch1;
 
-/* Laptop(serial_num, name, model, brand, description, picture, price) */
+/* Laptop(serial_num, model, brand, description, thumbnail) */
 create table Laptop(
 	serial_num varchar(100),
-	name text,
-	model varchar(100),
+	model text,
 	brand varchar(100),
 	description text,
-	picture blob,
+	thumbnail text,
 	primary key(serial_num) 
 );
 
@@ -263,14 +261,13 @@ DELIMITER ;
 create database Branch2;
 use Branch2;
 
-/* Laptop(serial_num, name, model, brand, description, picture, price) */
+/* Laptop(serial_num, model, brand, description, thumbnail) */
 create table Laptop(
 	serial_num varchar(100),
-	name text,
-	model varchar(100),
+	model text,
 	brand varchar(100),
 	description text,
-	picture blob,
+	thumbnail text,
 	primary key(serial_num) 
 );
 
@@ -306,14 +303,13 @@ DELIMITER ;
 create database Branch3;
 use Branch3;
 
-/* Laptop(serial_num, name, model, brand, description, picture, price) */
+/* Laptop(serial_num, model, brand, description, thumbnail) */
 create table Laptop(
 	serial_num varchar(100),
-	name text,
-	model varchar(100),
+	model text,
 	brand varchar(100),
 	description text,
-	picture blob,
+	thumbnail text,
 	primary key(serial_num) 
 );
 

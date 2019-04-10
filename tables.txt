@@ -1,12 +1,12 @@
 ----CompuStore Database
 
-CustomerAccount(acc_id, email, password,  fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
+CustomerAccount(acc_id, email, password,fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
 
 CreditCardDetails(card_num, expiration_month, expiration_year, billing_street, billing_city, billing_parish)
 CustomerCreditCard(acc_id, card_num)
 
-Branch(br_id, name, street, city, parish, telephone)
-Laptop(serial_num, name, model, brand, description, picture, price)
+Branch(br_id, name, street, city, thumbnail, telephone)
+Laptop(serial_num, model, brand, description, picture, price)
 
 CustomerCart(acc_id, item_count, value)
 
@@ -26,6 +26,6 @@ Stores(wh_id, serial_num, quantity)
 ---Branch databases (this schema will be replicated for 3 different branch databases)
 
 ItemsInStock(serial_num, quantity)
-
+ItemSold(serial_num,amount)
 
 

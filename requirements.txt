@@ -9,6 +9,8 @@ Flask-Script
 Flask-Login
 MySQL
 flask_mysqldb
+Faker
+mysql-connector
 
 
 # ----------------------
