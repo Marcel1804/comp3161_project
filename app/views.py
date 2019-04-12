@@ -1,14 +1,20 @@
-from app import app, mysql 
+from app import app, mysql # use to connect to the main databases CompuStore
 from flask import render_template, request, redirect, url_for, flash
 from forms import LoginForm, SignupForm
+
+# use to connected to the other database
+import mysql.connector
+from mysql.connector import Error
+from mysql.connector import errorcode
+
 
 @app.route("/", methods=['GET', 'POST'] )
 def home():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT firstName, lastName FROM test.MyUsers")
-    rv = cur.fetchall()
+    cur.execute("SELECT * FROM CompuStore.CustomerAccount where acc_id=1")
+    rv = cur.fetchone()#.all()
     
-    return render_template("home.html",data=rv[0][0],datas=rv[0][1])
+    return render_template("home.html",data=rv)
     
     
 @app.route("/login",methods=['GET', 'POST'])
