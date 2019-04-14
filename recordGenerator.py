@@ -1,8 +1,9 @@
 from itertools import permutations
 from faker import Faker
+fake=Faker()
 from random import randint
 import datetime
-import sqlGen
+import sqlController
 import random
 import string
 import sys
@@ -47,7 +48,7 @@ def generateAddress():
 
 def generateCustomers():
     #f = open("customers.txt", "r")
-    #n = sqlGen.databaseGenerator("CompuStore", sqlGen.columns)
+    #n = sqlController.databaseGenerator("CompuStore", sqlGen.columns)
     #name = permutations([1, 2, 3])
     #n.addRecord([], "CustomerAccount")
     name = generateName()

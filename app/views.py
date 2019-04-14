@@ -3,9 +3,9 @@ from flask import render_template, request, redirect, url_for, flash
 from forms import LoginForm, SignupForm
 
 # use to connected to the other database
-import mysql.connector
-from mysql.connector import Error
-from mysql.connector import errorcode
+#import mysql.connector
+#from mysql.connector import Error
+#from mysql.connector import errorcode
 
 
 @app.route("/", methods=['GET', 'POST'] )

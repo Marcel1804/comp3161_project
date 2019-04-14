@@ -29,16 +29,7 @@ sudo service postgresql start
  cur.execute("INSERT INTO MyUsers(firstName, lastName) VALUES (%s, %s)", (firstName, lastName))
 
 
-#SQLALCHEMY_DATABASE_URI = 'mysql://niikou:@localhost/compustore'
 
-# SQLALCHEMY_BINDS = {
-#     'branch1': 'mysql://niikou:@localhost/branch1.db',
-#     'branch2': 'mysql://niikou:@localhost/branch2.db',
-#     ('branch3': 'mysql://niikou:@localhost/branch3.db'
-# }
-
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True # added just to suppress a warning
-# db = SQLAlchemy(app)
 
 if request.method == "POST":
         details = request.form
@@ -72,3 +63,5 @@ return 'success'
           </li>
       {% endif %}
     </ul>
+    delete from CreditCardDetails; 
+    

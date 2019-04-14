@@ -1,4 +1,3 @@
-
 /*======================= CompuStore Main Database ===================================================*/
 
 create database CompuStore;
@@ -13,20 +12,22 @@ create table CustomerAccount(
 	lname varchar(30) not null,
 	gender enum('Female','Male') not null,
 	date_of_birth Date not null,
-	street varchar(100 not null),
+	street varchar(100) not null,
 	city varchar(100) not null,
 	parish varchar(100) not null,
-	telephone varchar(10),
+	telephone varchar(20),
 	created_on Date not null,
 	primary key(acc_id) 
 );
 
-/* CreditCardDetails(card_num, expiration_month, expiration_year, billing_street, billing_city, billing_parish) */
+/* CreditCardDetails(card_num, name_on_card, card_security_code, expiration_month, expiration_year, billing_street, billing_city, billing_parish) */
 create table CreditCardDetails(
-	card_num int not null,
-	expiration_month tinyint(2) not null,
-	expiration_year smallint(4) not null,
-	billing_street varchar(100 not null),
+	card_num bigint(11) not null,
+	name_on_card varchar(100),
+	card_security_code int,
+	expiration_month varchar(10) not null,
+	expiration_year varchar(10) not null,
+	billing_street varchar(100) not null,
 	billing_city varchar(100) not null,
 	billing_parish varchar(100) not null,
 	primary key(card_num) 
@@ -35,7 +36,7 @@ create table CreditCardDetails(
 /*CustomerCreditCard(acc_id, card_num)*/
 create table CustomerCreditCard(
 	acc_id int not null,
-	card_num int not null,
+	card_num bigint(11) not null,
 	primary key(acc_id, card_num),
 	foreign key(acc_id) references CustomerAccount(acc_id) on DELETE cascade on UPDATE cascade,
 	foreign key(card_num) references CreditCardDetails(card_num) on DELETE cascade on UPDATE cascade
@@ -48,11 +49,11 @@ create table Branch(
 	street varchar(100) not null,
 	city varchar(100) not null,
 	parish varchar(100) not null,
-	telephone varchar(10) not null,
+	telephone varchar(20) not null,
 	primary key(br_id)
 );
 
-/* Laptop(model_id, brand, description, thumbnail, price) */
+/* Laptop(model_id, model, brand, description, thumbnail, price) */
 create table Laptop(
 	model_id varchar(100) not null,
 	model text not null,
@@ -68,7 +69,7 @@ create table CustomerCart(
 	acc_id int not null,
 	item_count int not null,
 	value double(20,2) not null,
-	primary key(acc_id) not null,
+	primary key(acc_id),
 	foreign key(acc_id) references CustomerAccount(acc_id) on DELETE cascade on UPDATE cascade
 );
 
@@ -92,12 +93,12 @@ create table Warehouse(
 	street varchar(100) not null,
 	city varchar(100) not null,
 	parish varchar(100) not null,
-	telephone varchar(10) not null,
+	telephone varchar(20) not null,
 	primary key(wh_id)
 );
 
-/* Stores(wh_id, model_id, quantity) */
-create table Stores(
+/* WarehouseStock(wh_id, model_id, quantity) */
+create table WarehouseStock(
 	wh_id int not null,
 	model_id varchar(100) not null,
 	quantity int not null,
@@ -124,15 +125,14 @@ create table Checkout(
 	foreign key(track_num) references Receipt(track_num) on DELETE cascade on UPDATE cascade
 );
 
-/* PurchasedItems(pur_id, acc_id, serial_num, br_id, cost, date_purchased) */
+/* PurchasedItems(product_id, acc_id, br_id, cost, date_purchased) */
 create table PurchasedItems(
-	pur_id int auto_increment not null,
-	acc_id int not null,
 	product_id int not null,
+	acc_id int not null,
 	br_id varchar(50) not null,
 	cost double(20,2) not null,
 	date_purchased date not null,
-	primary key(pur_id),
+	primary key(product_id),
 	foreign key(acc_id) references CustomerCart(acc_id) on DELETE cascade on UPDATE cascade,
 	foreign key(br_id) references Branch(br_id) on DELETE cascade on UPDATE cascade
 );
@@ -169,7 +169,7 @@ DELIMITER //
 	END //
 DELIMITER ;
 
-/*PROCEDURE for orderByBrand(argument varchar)*/ 
+/*PROCEDURE for getByBrand(argument varchar)*/ 
 DELIMITER //
 	CREATE PROCEDURE getByBrand(IN Brand varchar(100))
 	BEGIN
@@ -179,9 +179,9 @@ DELIMITER ;
 
 /*PROCEDURE for addPurchasedItem(argument int, argument int, argument varchar, argument double )*/ 
 DELIMITER //
-	CREATE PROCEDURE addPurchasedItem(IN acc_id int, IN product_id int, IN br_id varchar(50), IN cost double(20,2))
+	CREATE PROCEDURE addPurchasedItem(IN product_id int, IN acc_id int, IN br_id varchar(50), IN cost double(20,2))
 	BEGIN
-	INSERT INTO PurchasedItems VALUES (acc_id, product_id, br_id, old.cost, CURDATE());
+	INSERT INTO PurchasedItems VALUES (product_id, acc_id, br_id, old.cost, CURDATE());
 	END //
 DELIMITER ;
 
@@ -233,43 +233,36 @@ create table Laptop(
 	primary key(model_id) 
 );
 
-/* AmountInStock(model_id, quantity) */
-create table AmountInStock(
+/* ModelStockInfo(model_id, amt_in_stock, amt_sold) */
+create table ModelStockInfo(
 	model_id varchar(100)not null ,
-	quantity int not null,
+	amt_in_stock int not null,
+	amt_sold int not null,
 	primary key(model_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
 
-/* ItemsInStock(product_id, model_id) */
-create table ItemsInStock(
+/* ModelItems(product_id, model_id) */
+create table ModelItems(
 	product_id int not null,
 	model_id varchar(100) not null,
 	primary key(product_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
 
-/* AmountSold(model_id, amount) 
-create table AmountSold(
-	model_id varchar(100) not null,
-	amount int not null,
-	primary key(model_id),
-	foreign key(model_id) references ItemsInStock(model_id) on DELETE cascade on UPDATE cascade
-);*/
-
 /*------PROCEDURE-------------------------------------------------------------------------------------------------------*/
+/*CREATE FUNCTION getProducts(@modelId varchar(100), @amt int)
+RETURNS TABLE AS
+RETURN (SELECT product_id FROM   ModelItems WHERE  model_id = @modelId LIMIT @amt)*/
 
-/*PROCEDURE for purchaseItemr(argument varchar)*/  
+/*PROCEDURE for purchaseItem(argument varchar,argument int))*/  
 DELIMITER //
-	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), amt int, OUT prod_id INT)
+	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), OUT prod_id INT)
 	BEGIN
-	UPDATE AmountInStock SET quantity = (quantity - amt) WHERE model_id = modelId;
-	/*IF EXISTS (SELECT model_id FROM AmountSold WHERE model_id = modelId LIMIT 1) THEN
-		UPDATE AmountSold SET amount = (amount + amt) WHERE model_id = modelId;
-	ELSE
-		INSERT INTO AmountSold VALUES(modelId, amt);
-	END IF;*/
-	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId;
+	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1), amt_sold = (amt_sold + 1) WHERE model_id like modelId;
+	
+	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId LIMIT 1;
+	DELETE FROM ItemsInStock WHERE product_id like prod_id;
 	END //
 DELIMITER ;
 
@@ -289,43 +282,36 @@ create table Laptop(
 	primary key(model_id) 
 );
 
-/* AmountInStock(model_id, quantity) */
-create table AmountInStock(
-	model_id varchar(100) not null,
-	quantity int not null,
+/* ModelStockInfo(model_id, amt_in_stock, amt_sold) */
+create table ModelStockInfo(
+	model_id varchar(100)not null ,
+	amt_in_stock int not null,
+	amt_sold int not null,
 	primary key(model_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
 
-/* ItemsInStock(product_id, model_id) */
-create table ItemsInStock(
+/* ModelItems(product_id, model_id) */
+create table ModelItems(
 	product_id int not null,
 	model_id varchar(100) not null,
 	primary key(product_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
 
-/* AmountSold(model_id, amount) 
-create table AmountSold(
-	model_id varchar(100) not null,
-	amount int not null,
-	primary key(model_id),
-	foreign key(model_id) references ItemsInStock(model_id) on DELETE cascade on UPDATE cascade
-);*/
-
 /*------PROCEDURE-------------------------------------------------------------------------------------------------------*/
+/*CREATE FUNCTION getProducts(@modelId varchar(100), @amt int)
+RETURNS TABLE AS
+RETURN (SELECT product_id FROM   ModelItems WHERE  model_id = @modelId LIMIT @amt)*/
 
-/*PROCEDURE for purchaseItemr(argument varchar)*/ 
+/*PROCEDURE for purchaseItem(argument varchar,argument int))*/  
 DELIMITER //
-	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), amt int, OUT prod_id INT)
+	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), OUT prod_id INT)
 	BEGIN
-	UPDATE AmountInStock SET quantity = (quantity - amt) WHERE model_id = modelId;
-	/*IF EXISTS (SELECT model_id FROM AmountSold WHERE model_id = modelId LIMIT 1) THEN
-		UPDATE AmountSold SET amount = (amount + amt) WHERE model_id = modelId;
-	ELSE
-		INSERT INTO AmountSold VALUES(modelId, amt);
-	END IF;*/
-	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId;
+	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1), amt_sold = (amt_sold + 1) WHERE model_id like modelId;
+	
+	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId LIMIT 1;
+	DELETE FROM ItemsInStock WHERE product_id like prod_id;
 	END //
 DELIMITER ;
 
@@ -345,44 +331,96 @@ create table Laptop(
 	primary key(model_id) 
 );
 
-/* AmountInStock(model_id, quantity) */
-create table AmountInStock(
-	model_id varchar(100) not null,
-	quantity int not null,
+/* ModelStockInfo(model_id, amt_in_stock, amt_sold) */
+create table ModelStockInfo(
+	model_id varchar(100)not null ,
+	amt_in_stock int not null,
+	amt_sold int not null,
 	primary key(model_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
 
-/* ItemsInStock(product_id, model_id) */
-create table ItemsInStock(
+/* ModelItems(product_id, model_id) */
+create table ModelItems(
 	product_id int not null,
 	model_id varchar(100) not null,
 	primary key(product_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
 
-/* AmountSold(model_id, amount) 
-create table AmountSold(
-	model_id varchar(100) not null,
-	amount int not null,
-	primary key(model_id),
-	foreign key(model_id) references ItemsInStock(model_id) on DELETE cascade on UPDATE cascade
-);*/
-
 /*------PROCEDURE-------------------------------------------------------------------------------------------------------*/
+/*CREATE FUNCTION getProducts(@modelId varchar(100), @amt int)
+RETURNS TABLE AS
+RETURN (SELECT product_id FROM   ModelItems WHERE  model_id = @modelId LIMIT @amt)*/
 
-/*PROCEDURE for purchaseItemr(argument varchar)*/  
+/*PROCEDURE for purchaseItem(argument varchar,argument int))*/  
 DELIMITER //
-	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), amt int, OUT prod_id INT)
+	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), OUT prod_id INT)
 	BEGIN
-	UPDATE AmountInStock SET quantity = (quantity - amt) WHERE model_id = modelId;
-	/*IF EXISTS (SELECT model_id FROM AmountSold WHERE model_id = modelId LIMIT 1) THEN
-		UPDATE AmountSold SET amount = (amount + amt) WHERE model_id = modelId;
-	ELSE
-		INSERT INTO AmountSold VALUES(modelId, amt);
-	END IF;*/
-	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId;
+	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1), amt_sold = (amt_sold + 1) WHERE model_id like modelId;
+	
+	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId LIMIT 1;
+	DELETE FROM ItemsInStock WHERE product_id like prod_id;
 	END //
 DELIMITER ;
+
+
+/*======================= MultlinkBankinformation Database ===================================================*/
+
+create database MultiLink;
+use MultiLink;
+
+/* CreditCardDetails(card_num, name_on_card, card_security_code, expiration_month, expiration_year, billing_street, billing_city, billing_parish) */
+create table CreditCardDetails(
+	card_num int not null,
+	name_on_card varchar(100),
+	card_security_code int,
+	expiration_month varchar(10) not null,
+	expiration_year varchar(10) not null,
+	billing_street varchar(100) not null,
+	billing_city varchar(100) not null,
+	billing_parish varchar(100) not null,
+	primary key(card_num) 
+);
+
+/* view provided by a bank's database to check if the customer's credit card exists and if he/she can make this purchase. */
+CREATE VIEW BanksCreditCards AS SELECT * FROM CreditCardDetails;
+
+/* CustomerAccount(acc_id, email, password,  fname, lname, gender, date_of_birth, street, city, parish, telephone, open_on)
+create table CustomerAcc(
+	acc_id int auto_increment not null,
+	email varchar(100),
+	password varchar(255) not null,
+	fname varchar(30) not null,
+	lname varchar(30) not null,
+	gender varchar(20) not null,
+	date_of_birth Date not null,
+	street varchar(100)not null,
+	city varchar(100) not null,
+	parish varchar(100) not null,
+	telephone varchar(20),
+	open_on Date not null,
+	primary key(acc_id) 
+);*/
+
+/* bank(bank_id, bank_name, acc_id,account_balance)
+create table Bank(
+	bank_id int auto_increment not null,
+	bank_name varchar(100) not  null,
+	acc_id	int not null,
+	account_balance decimal(10,2) not null,
+	primary key(bank_id,acc_id),
+	foreign key(acc_id) references CustomerAcc(acc_id) on DELETE cascade on UPDATE cascade
+);*/
+
+/*CustomerCreditCard(acc_id, card_num)
+create table CustCreditCard(
+	acc_id int not null,
+	card_num int not null,
+	primary key(acc_id, card_num),
+	foreign key(acc_id) references CustomerAcc(acc_id) on DELETE cascade on UPDATE cascade,
+	foreign key(card_num) references CreditCardDetail(card_num) on DELETE cascade on UPDATE cascade
+);
+*/
 
 use CompuStore;
