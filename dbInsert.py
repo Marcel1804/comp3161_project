@@ -4,8 +4,8 @@ from mysql.connector import Error
 from mysql.connector import errorcode
 import random
 import sqlController
-import insertLaptops
-from recordGenerator import getGender
+from  insertLaptops import recordGenerator 
+import getGender
 fake=Faker()
 
 
@@ -106,19 +106,21 @@ def insertCard(start,end):
         if(connection.is_connected()):
             cursor.close()
             connection.close()
-            print("MySQL connection is closed")
     
 
 # Branch(br_id, name, street, city, thumbnail, telephone)
-def insertBranch(start, end):
-    now = datetime.datetime.now() 
-    brid = "'"+str(int(now.second))+str(int(now.microsecond))+"'"
-    name = "\"KingstonBranch\""
-    fake  = Faker()
-    fake = fake.address()
-    street = 
+def insertBranch(num):
+    parish = []
+    for i in range(num):
+        now = datetime.datetime.now() 
+        brid = "'"+str(int(now.second))+str(int(now.microsecond))+"'"
+        name = "\"KingstonBranch\""
+        fake  = Faker()
+        fake = fake.address()
+        street = fake.split(',')[0]
     
-    conn = sqlController.databaseGenerator([brid, name, ],"CompuStore")
+    conn = sqlController.databaseGenerator("CompuStore")
+    conn.addRecord([brid, name, street, ], "Branch")
 
 
 
@@ -132,14 +134,15 @@ def insertBranch(start, end):
 # Warehouse(wh_id, street, city, parish, telephone)
 def insertWarehouse(times):
     try:
-        connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
-        cursor = connection.cursor(prepared=True)
-        sql_insert_data_query="INSERT INTO CWarehouse(wh_id, street, city, parish, telephone) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-    insert_tuple=(fake.email(), fake.password(),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"))
-       cursor.execute( sql_insert_data_query, insert_tuple)
-           
-       connection.commit() 
-       print ("Date Record inserted successfully into CustomerAccount table")
+        for _ in range(0,times):
+            connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
+            cursor = connection.cursor(prepared=True)
+            sql_insert_data_query="INSERT INTO Warehouse(street,city,parish,telephone) VALUES (%s,%s,%s,%s)"
+            insert_tuple=(fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber())
+            cursor.execute( sql_insert_data_query, insert_tuple)
+            
+        connection.commit() 
+        print ("Date Record inserted successfully into Warehouse table")
     except mysql.connector.Error as error :
         print("Failed inserting date object into MySQL table {}".format(error))
     finally:
@@ -149,12 +152,34 @@ def insertWarehouse(times):
             connection.close()
             print("MySQL connection is closed") 
 
-# WarehouseStock(wh_id, model_id, quantity) 
+# WarehouseStock(wh_id, model_id, quantity) need editing
+def insertWaresStock(start,end):
+    try:
+        for _ in range(0,times):
+            connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
+            cursor = connection.cursor(prepared=True)
+            sql_insert_data_query="INSERT INTO Warehouse(model_id,quantity) VALUES (%s,%s)"
+            insert_tuple=()
+            cursor.execute( sql_insert_data_query, insert_tuple)
+            
+        connection.commit() 
+        print ("Date Record inserted successfully into WareStock table")
+    except mysql.connector.Error as error :
+        print("Failed inserting date object into MySQL table {}".format(error))
+    finally:
+        #closing database connection.
+        if(connection.is_connected()):
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed") 
+    
 # Receipt(track_num, invoice)
+
 # Checkout(acc_id, track_num, total_cost, transaction_date)
 
 # PurchasedItem(pur_id, acc_id, serial_num, br_id, quantity, cost, date_purchased)
 
 # WriteReview(acc_id, serial_num, rev_text, date_written)
-    
-# Stores(wh_id, serial_num, quantity)
+# ModelStockInfo(model_id, amt_in_stock, amt_sold) */
+# ModelItems(product_id, model_id) */
+# CreditCardDetails(card_num, name_on_card, card_security_code, expiration_month, expiration_year, billing_street, billing_city, billing_parish) */
