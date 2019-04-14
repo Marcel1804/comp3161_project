@@ -110,17 +110,22 @@ def insertCard(start,end):
 
 # Branch(br_id, name, street, city, thumbnail, telephone)
 def insertBranch(num):
-    parish = []
+     parish = ["Kingston", "St Andrew", "Clarendon", "St Catherine", "Portland", 
+                "St Thomas", "Hannover", "Westmoreland", "St Ann", "St Mary", 
+                "St Elizabeth", "Trelawny", "St James", "Manchester" ]
     for i in range(num):
         now = datetime.datetime.now() 
         brid = "'"+str(int(now.second))+str(int(now.microsecond))+"'"
-        name = "\"KingstonBranch\""
+        p = random.choice(parish)
+        name = "\"{}Branch\"".format(p)
         fake  = Faker()
         fake = fake.address()
         street = fake.split(',')[0]
+        phone = "'"+phoneNumber()+"'"
+        city = 
     
     conn = sqlController.databaseGenerator("CompuStore")
-    conn.addRecord([brid, name, street, ], "Branch")
+    conn.addRecord([brid, name, street, city, p, phone], "Branch")
 
 
 

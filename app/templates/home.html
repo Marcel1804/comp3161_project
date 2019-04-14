@@ -5,19 +5,18 @@
     <div class="center"><p><strong>+1(876) 401-3082</strong> 7 days a week from 8:00am to 5:00pm</p></div>  
     
     <div class="border">
-         <a href=""> <img src="{{url_for('static',filename='uploads/'+'logo.JPG' )}}" alt=" logo icon " style="width:300px;height:80px;padding-bottom:10px;padding-right:30px;"></a>
+         <a href="{{ url_for('about') }}"> <img src="{{url_for('static',filename='uploads/'+'logo.JPG' )}}" alt=" logo icon " style="width:300px;height:80px;padding-bottom:10px;padding-right:30px;"></a>
          <input type="text" class="border center" style="width:600px;padding-right:30px;" placeholder="Search Stores">
-         <a href=""> <img src="{{url_for('static',filename='uploads/'+'cart.png' )}}" alt="shopping cart picture" style="width:80px;height:80px;padding-bottom:10px;padding-left:20px;"></a>
-         <p></p> 
+         <span><a href="{{ url_for('cart') }}"> <img src="{{url_for('static',filename='uploads/'+'cart.png' )}}" alt="shopping cart picture" style="width:80px;height:80px;padding-bottom:10px;"> 0 items </a></span>
     </div>
     <div class="center">
         <h1>Welcome</h1>
     </div>
     
     <div class="border" style="width:300px;height:600px;float:left;padding-left:100px;">
-     <ul class="co">
-        <li class="co2"><a href="">Collections</a></li>
-        <li><a href=""> Laptops</a></li>
+     <ul class="co2 center">
+        <li class=""><a href="">Collections</a></li>
+        <li><a href="{{ url_for('laptop') }}"> Laptops</a></li>
         <li><a href=""> Accessories</a></li>
         <li><a href=""> Tablets</a></li>
         <li><a href=""> Laptop on sale</a></li>
@@ -26,7 +25,7 @@
     </div>
     
     <div class="border" style="width:800px;height:600px;float:left;">
-        {{data}}
+     <img src="{{url_for('static',filename='uploads/laptop/l3.png' )}}" alt="laptop picture" style="width:200px;height:200px;padding-bottom:10px;padding-right:10px;">
         
     </div>
     

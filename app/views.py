@@ -29,6 +29,38 @@ def signup():
        form = SignupForm()
        return render_template("signup.html",form=form)
 
+@app.route("/admin")
+def admin():
+       return render_template("admin.html")
+
+@app.route("/about")
+def about():
+       return render_template("about.html")
+
+@app.route("/cart")
+def cart():
+       return render_template("cart.html")
+
+@app.route("/checkout")
+def checkout():
+       return render_template("checkout.html")
+
+@app.route("/creditCart")
+def creditCart():
+       return render_template("creditCart.html")
+       
+@app.route("/laptop")
+def laptop():
+       return render_template("laptop.html")
+
+@app.route("/profile_page")
+def profile_page():
+       return render_template("profile_page.html")
+
+@app.route("/secure_page")
+def secure_page():
+       return render_template("secure_page.html")
+       
 @app.after_request
 def add_header(response):
     """
