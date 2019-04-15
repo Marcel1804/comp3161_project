@@ -2,42 +2,136 @@
 
 {% block main %}
 
-    <div class="center"><p><strong>+1(876) 401-3082</strong> 7 days a week from 8:00am to 5:00pm</p></div>  
+    <div class="center"><p><strong>+1(876) 401-3082</strong> &nbsp 7 days a week from 8:00am to 5:00pm</p></div>  
     
-    <div class="border">
-         <a href="{{ url_for('about') }}"> <img src="{{url_for('static',filename='uploads/'+'logo.JPG' )}}" alt=" logo icon " style="width:300px;height:80px;padding-bottom:10px;padding-right:30px;"></a>
-         <input type="text" class="border center" style="width:600px;padding-right:30px;" placeholder="Search Stores">
-         <span><a href="{{ url_for('cart') }}"> <img src="{{url_for('static',filename='uploads/'+'cart.png' )}}" alt="shopping cart picture" style="width:80px;height:80px;padding-bottom:10px;"> 0 items </a></span>
+    <div class="border" style="width:1200px;height:100px;">
+         <div class="fl">
+             <a href="{{ url_for('about') }}"> <img src="{{url_for('static',filename='uploads/'+'logo.JPG' )}}" alt=" logo icon " style="width:300px;height:80px;padding-bottom:10px;padding-right:30px;"></a>
+         </div>
+         <div class ="fl "style="padding-top:20px;">
+             <form>
+                <div>
+                <input type="text" name="search" class="search" placeholder="Search here">
+                <input type="submit"  name="submit" class="submit" value="Search"/>
+                </div>
+             </form>
+         </div>
+         <div class ="fl">
+             <a href="{{ url_for('cart') }}"> <img src="{{url_for('static',filename='uploads/'+'cart.png' )}}" alt="shopping cart picture" style="width:80px;height:80px;padding-bottom:10px;"> 0 items </a>
+         </div>
     </div>
+    
     <div class="center">
         <h1>Welcome</h1>
     </div>
     
-    <div class="border" style="width:300px;height:600px;float:left;padding-left:100px;">
-     <ul class="co2 center">
-        <li class=""><a href="">Collections</a></li>
-        <li><a href="{{ url_for('laptop') }}"> Laptops</a></li>
-        <li><a href=""> Accessories</a></li>
-        <li><a href=""> Tablets</a></li>
-        <li><a href=""> Laptop on sale</a></li>
-        <li><a href=""> other</a></li>
-     </ul>    
-    </div>
-    
-    <div class="border" style="width:800px;height:600px;float:left;">
-     <img src="{{url_for('static',filename='uploads/laptop/l3.png' )}}" alt="laptop picture" style="width:200px;height:200px;padding-bottom:10px;padding-right:10px;">
-        
-    </div>
-    
-    <div class="border" style="width:1100px;height:300px;float:left">
-        
-    </div>
-
-
-        <div class="center">
-            <p>This webpage is about .</p>
+    <div>
+        <div class="" style="width:1200px;height:1000px;padding-left:50px" >
+            <div class="border center" style="width:300px;height:1000px;float:left;">
+             <ul class="co2 ">
+                <li class=""><a href=""><h4>Collections</h4></a></li>
+                <li><a href="{{ url_for('laptop') }}"> Laptops</a></li>
+                <li><a href=""> Accessories</a></li>
+                <li><a href=""> Tablets</a></li>
+                <li><a href=""> Laptop on sale</a></li>
+                <li><a href=""> other</a></li>
+             </ul>
+             <ul class="co2">
+                <li class=""><a href=""><h4>Speicals</h4></a></li>
+                <li><a href="{{ url_for('laptop') }}"> Laptops</a></li>
+                <li><a href=""> Accessories</a></li>
+                <li><a href=""> Tablets</a></li>
+                <li><a href=""> Laptop on sale</a></li>
+                <li><a href=""> other</a></li>
+             </ul>  
+            </div>
+            
+            <div class="" style="width:800px;height:1000px;float:left;">
+                 <div class ="border" style="text-align: center">
+                     <img src="{{url_for('static',filename='uploads/laptop/l3.png' )}}" alt="laptop picture" style="width:400px;height:400px;">
+                     <h6> Laptop </h6>
+                 </div>
+                <div class ="border" style="text-align: center">
+                     <img src="{{url_for('static',filename='uploads/Accessories/a3.png' )}}" alt="laptop accessories picture" style="width:400px;height:400px;">
+                     <h6> Accessories </h6>
+                </div>
+            </div>
         </div>
-    </div>
+        
+        <div class="" style="width:1300px;float:left;padding-left:5%;">
+          
+            <div class="border bottombox" >  
+             <p>
+              <h4>SHIPPING AND DELIVERY</h4>
+              Here you can read some details about a nifty little lifecycle of your
+              order's journey from the time you place your order to your new treasures arriving at your doorstep
+              </p>
+             </div>
+             <div class="border bottombox">
+                 <p>
+                    <h4>PAYMENT METHODS</h4>
+                    It is equally important to choose the solution which offers a specific selection of credit cards that are most popular in the merchants target markets
+                    We take Visa & MasterCard as they are widely used by cyber customers.
+                 </p>
+             </div>
+             <div class="border bottombox">
+                 <p>
+                    <h4>CONTACT US</h4>
+                    You can contact us any way that is convenient for you.
+                    We are available 24/7 via fax, email or telephone. You can also use a quick contact form or visit our office personally.
+                 </p>
+             </div>
+             <div>
+                <div class="border bottombox">
+                    <h4>NAVIGATION</h4>
+                    <ul class="co2 ">
+                        <li><a href="">HOME</a></li>
+                        <li><a href="">PRODUCTS</a></li>
+                        <li><a href="">SEARCH</a></li>
+                        <li><a href="{{ url_for('review') }}">BLOG</a></li>
+                    </ul>
+                </div>
+                <div class="border bottombox">
+                    <h4>CUSTOMER SERVICE</h4>
+                    <ul class="co2 ">
+                        <li><a href="">CONTACT US</a></li>
+                        <li><a href="">SITEMAP </a></li>
+                    </ul>
+                </div>
+                <div class="border bottombox">
+                    <h4> CATALOG </h4>
+                    <ul class="co2 ">
+                        <li><a href="">ACCESSORIES </a></li>
+                        <li><a href="">DESKTOPS </a></li>
+                        <li><a href="">LAPTOPS </a></li>
+                        <li><a href="">LIGHTWEIGHT PCS </a></li>
+                     </ul>
+                </div>
+                <div class="border bottombox">
+                    <h4>MY ACCOUNT</h4>
+                    <ul class="co2 ">
+                        <li><a href="{{ url_for('profile_page') }}">MY ACCOUNT </a></li>
+                        <li><a href="">MY CART </a></li>
+                    </ul>
+                </div>
+                <div class="border bottombox">
+                    <h4> CONTACTS </h4>
+                    <p>
+                    CompuStore. mona road kingston 7.<br>
+                    +1(876) 401-3082<br>
+                    info@CompuStore.org<br>
+                    7 Days a week from 8:00 am to 5:00 pm
+                    </p>
+               </div>
+    
+             </div>
+        </div>
+    
+    
+            <div class="center">
+                <p><strong> WE have a laptop to suit any packet. </strong></p>
+            </div>
+     </div>
     {% include 'flash_messages.html' %}
     </div>
  {% endblock %}

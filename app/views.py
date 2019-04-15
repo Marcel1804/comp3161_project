@@ -1,6 +1,6 @@
 from app import app, mysql # use to connect to the main databases CompuStore
 from flask import render_template, request, redirect, url_for, flash
-from forms import LoginForm, SignupForm
+from forms import LoginForm, SignupForm, Creditcard 
 
 # use to connected to the other database
 #import mysql.connector
@@ -24,7 +24,7 @@ def login():
     #if request.method == 'POST' and form.validate_on_submit():
     return render_template("login.html",form=form)
 
-@app.route("/sign-up")
+@app.route("/sign-up",methods=['GET', 'POST'])
 def signup():
        form = SignupForm()
        return render_template("signup.html",form=form)
@@ -45,9 +45,10 @@ def cart():
 def checkout():
        return render_template("checkout.html")
 
-@app.route("/creditCart")
+@app.route("/creditCart",methods=['GET', 'POST'])
 def creditCart():
-       return render_template("creditCart.html")
+       form =Creditcard()
+       return render_template("creditCart.html",form=form)
        
 @app.route("/laptop")
 def laptop():
@@ -56,6 +57,10 @@ def laptop():
 @app.route("/profile_page")
 def profile_page():
        return render_template("profile_page.html")
+
+@app.route("/review")
+def review():
+    return render_template("review.html")
 
 @app.route("/secure_page")
 def secure_page():
