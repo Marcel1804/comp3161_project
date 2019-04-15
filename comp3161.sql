@@ -386,7 +386,7 @@ create table CreditCardDetails(
 /* view provided by a bank's database to check if the customer's credit card exists and if he/she can make this purchase. */
 CREATE VIEW BanksCreditCards AS SELECT * FROM CreditCardDetails;
 
-/* CustomerAccount(acc_id, email, password,  fname, lname, gender, date_of_birth, street, city, parish, telephone, open_on)
+/* CustomerAccount(acc_id, email, password, fname, lname, gender, date_of_birth, street, city, parish, telephone, open_on)
 create table CustomerAcc(
 	acc_id int auto_increment not null,
 	email varchar(100),

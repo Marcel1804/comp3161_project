@@ -13,7 +13,6 @@ def home():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM CompuStore.CustomerAccount where acc_id=1")
     rv = cur.fetchone()#.all()
-    
     return render_template("home.html",data=rv)
     
     

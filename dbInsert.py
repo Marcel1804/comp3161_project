@@ -126,18 +126,11 @@ def insertCard(start,end):
 #     conn = sqlController.databaseGenerator("CompuStore")
 #     conn.addRecord([brid, name, street, city, p, phone], "Branch")
 
-# Laptop(serial_num, model, brand, description, picture, price)
+# Laptop(model_num, model, brand, description, thumbnail, price)
 
 # CustomerCart(acc_id, item_count, value)
 
-# CartItems(acc_id, serial_num, br_id, quantity, cost, purchasing, date_added)
-
-# Receipt(track_num, invoice)
-# Checkout(acc_id, track_num, total_cost, transaction_date)
-
-# PurchasedItem(pur_id, acc_id, serial_num, br_id, quantity, cost, date_purchased)
-
-# WriteReview(acc_id, serial_num, rev_text, date_written)
+# CartItems(acc_id, model_id, br_id, quantity, cost,date_added)
 
 # Warehouse(wh_id, street, city, parish, telephone)
 def insertWarehouse(times):
@@ -180,4 +173,27 @@ def insertWarehouse(times):
 #             cursor.close()
 #             connection.close()
 #             print("MySQL connection is closed") 
+
+# Receipt(track_num, invoice)
+
+# Checkout(acc_id, track_num, total_cost, transaction_date)
+
+# PurchasedItem(product_id,acc_id,br_id, quantity, cost, date_purchased)
+
+# WriteReview(acc_id,model_id, rev_text, date_written)
+
+#Branches Database
+#Laptop(model_id, model, brand, description, thumbnail) 
+#ModelStockInfo(model_id, amt_in_stock, amt_sold)
+#ModelItems(product_id, model_id)
+
+#MultiLink
+#CreditCardDetails(card_num, name_on_card, card_security_code, expiration_month, expiration_year, billing_street, billing_city, billing_parish) */
+
+
+
+
+
+
+
  
