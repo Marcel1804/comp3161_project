@@ -3,9 +3,8 @@ import mysql.connector
 from mysql.connector import Error
 from mysql.connector import errorcode
 import random
-import sqlController
-from  insertLaptops import recordGenerator 
-import getGender
+#import sqlGen
+from recordGenerator import getGender
 fake=Faker()
 
 
@@ -73,7 +72,7 @@ def insertCusAcc(times):
             print("MySQL connection is closed") 
 
 ## use to populate the CreditCardDetails table and CustomerCeditCard in the CompuStoreDB
-#CreditCardDetails(card_num,name_on_card, card_security_code,expiration_month, expiration_year, billing_street, billing_city, billing_parish)
+#CreditCardDetails(card_num,name_on_card,card_security_code,expiration_month, expiration_year, billing_street, billing_city, billing_parish)
 #CustomerCreditCard(acc_id, card_num)
 def insertCard(start,end):
     try:
@@ -84,21 +83,21 @@ def insertCard(start,end):
             cursor.execute("SELECT acc_id, fname, lname, street, city, parish FROM CompuStore.CustomerAccount where acc_id={}".format(i))
             result = cursor.fetchone()
             name=result[1].decode()+" "+result[2].decode()
-            
+
             # insert data into the CreditCardDetail table
             card=cardNum()
             sql_insert_data_query="INSERT INTO CreditCardDetails(card_num,name_on_card,card_security_code,expiration_month,expiration_year,billing_street,billing_city,billing_parish) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
             insert_tuple=(card,name,cardSC(),fake.month(),year(),result[3].decode(),result[4].decode(),result[5].decode())
+            print(card,name,cardSC(),fake.month(),year(),result[3].decode(),result[4].decode(),result[5].decode())
             cursor.execute( sql_insert_data_query,insert_tuple)
-            
+
             # insert data into the CustomerCreditCard table
             sql_insert_data_query="INSERT INTO CustomerCreditCard(acc_id,card_num) VALUES (%s,%s)"
             insert_tuple=(result[0],card)
             cursor.execute( sql_insert_data_query,insert_tuple)
             
-            
         connection.commit() 
-        print ("Date Record inserted successfully into tables")
+        print ("Date Record inserted successfully CreditCardDetails and CustomerCreditCard into tables")
     except mysql.connector.Error as error :
         print("Failed inserting date object into MySQL table {}".format(error))
     finally:
@@ -106,28 +105,26 @@ def insertCard(start,end):
         if(connection.is_connected()):
             cursor.close()
             connection.close()
+            print("MySQL connection is closed")
     
 
 # Branch(br_id, name, street, city, thumbnail, telephone)
-def insertBranch(num):
-     parish = ["Kingston", "St Andrew", "Clarendon", "St Catherine", "Portland", 
-                "St Thomas", "Hannover", "Westmoreland", "St Ann", "St Mary", 
-                "St Elizabeth", "Trelawny", "St James", "Manchester" ]
-    for i in range(num):
-        now = datetime.datetime.now() 
-        brid = "'"+str(int(now.second))+str(int(now.microsecond))+"'"
-        p = random.choice(parish)
-        name = "\"{}Branch\"".format(p)
-        fake  = Faker()
-        fake = fake.address()
-        street = fake.split(',')[0]
-        phone = "'"+phoneNumber()+"'"
-        city = 
-    
-    conn = sqlController.databaseGenerator("CompuStore")
-    conn.addRecord([brid, name, street, city, p, phone], "Branch")
-
-
+# def insertBranch(start, end):
+#     parish = ["Kingston", "St Andrew", "Clarendon", "St Catherine", "Portland", 
+#                 "St Thomas", "Hannover", "Westmoreland", "St Ann", "St Mary", 
+#                 "St Elizabeth", "Trelawny", "St James", "Manchester" ]
+#     for i in range(num):
+#         now = datetime.datetime.now() 
+#         brid = "'"+str(int(now.second))+str(int(now.microsecond))+"'"
+#         p = random.choice(parish)
+#         name = "\"{}Branch\"".format(p)
+#         fake  = Faker()
+#         fake = fake.address()
+#         street = fake.split(',')[0]
+#         phone = "'"+phoneNumber()+"'"
+#         #city = 
+#     conn = sqlController.databaseGenerator("CompuStore")
+#     conn.addRecord([brid, name, street, city, p, phone], "Branch")
 
 # Laptop(serial_num, model, brand, description, picture, price)
 
@@ -135,17 +132,23 @@ def insertBranch(num):
 
 # CartItems(acc_id, serial_num, br_id, quantity, cost, purchasing, date_added)
 
+# Receipt(track_num, invoice)
+# Checkout(acc_id, track_num, total_cost, transaction_date)
+
+# PurchasedItem(pur_id, acc_id, serial_num, br_id, quantity, cost, date_purchased)
+
+# WriteReview(acc_id, serial_num, rev_text, date_written)
 
 # Warehouse(wh_id, street, city, parish, telephone)
 def insertWarehouse(times):
     try:
+        connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
+        cursor = connection.cursor(prepared=True)
         for _ in range(0,times):
-            connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
-            cursor = connection.cursor(prepared=True)
             sql_insert_data_query="INSERT INTO Warehouse(street,city,parish,telephone) VALUES (%s,%s,%s,%s)"
             insert_tuple=(fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber())
             cursor.execute( sql_insert_data_query, insert_tuple)
-            
+
         connection.commit() 
         print ("Date Record inserted successfully into Warehouse table")
     except mysql.connector.Error as error :
@@ -156,35 +159,25 @@ def insertWarehouse(times):
             cursor.close()
             connection.close()
             print("MySQL connection is closed") 
-
+ 
 # WarehouseStock(wh_id, model_id, quantity) need editing
-def insertWaresStock(start,end):
-    try:
-        for _ in range(0,times):
-            connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
-            cursor = connection.cursor(prepared=True)
-            sql_insert_data_query="INSERT INTO Warehouse(model_id,quantity) VALUES (%s,%s)"
-            insert_tuple=()
-            cursor.execute( sql_insert_data_query, insert_tuple)
-            
-        connection.commit() 
-        print ("Date Record inserted successfully into WareStock table")
-    except mysql.connector.Error as error :
-        print("Failed inserting date object into MySQL table {}".format(error))
-    finally:
-        #closing database connection.
-        if(connection.is_connected()):
-            cursor.close()
-            connection.close()
-            print("MySQL connection is closed") 
-    
-# Receipt(track_num, invoice)
+# def insertWaresStock(start,end):
+#     try:
+#         connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
+#         cursor = connection.cursor(prepared=True)
+#         for _ in range(start,end):
+#             sql_insert_data_query="INSERT INTO Warehouse(model_id,quantity) VALUES (%s,%s)"
+#             insert_tuple=()
+#             cursor.execute( sql_insert_data_query, insert_tuple)
 
-# Checkout(acc_id, track_num, total_cost, transaction_date)
-
-# PurchasedItem(pur_id, acc_id, serial_num, br_id, quantity, cost, date_purchased)
-
-# WriteReview(acc_id, serial_num, rev_text, date_written)
-# ModelStockInfo(model_id, amt_in_stock, amt_sold) */
-# ModelItems(product_id, model_id) */
-# CreditCardDetails(card_num, name_on_card, card_security_code, expiration_month, expiration_year, billing_street, billing_city, billing_parish) */
+#         connection.commit() 
+#         print ("Date Record inserted successfully into WareStock table")
+#     except mysql.connector.Error as error :
+#         print("Failed inserting date object into MySQL table {}".format(error))
+#     finally:
+#         #closing database connection.
+#         if(connection.is_connected()):
+#             cursor.close()
+#             connection.close()
+#             print("MySQL connection is closed") 
+ 
