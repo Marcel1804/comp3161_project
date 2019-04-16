@@ -8,11 +8,11 @@
          <div class="fl">
              <a href="{{ url_for('about') }}"> <img src="{{url_for('static',filename='uploads/'+'logo.JPG' )}}" alt=" logo icon " style="width:300px;height:80px;padding-bottom:10px;padding-right:30px;"></a>
          </div>
-         <div class ="fl "style="padding-top:20px;">
-             <form>
+         <div class ="fl ">
+             <form action="{{url_for('home')}}" method="post">
                 <div>
-                <input type="text" name="search" class="search" placeholder="Search here">
-                <input type="submit"  name="submit" class="submit" value="Search"/>
+                {{form.search(class='search', placeholder="Search here")}}
+                <button type="submit" name="submit" class="submit"/>Search</button>
                 </div>
              </form>
          </div>
@@ -22,12 +22,12 @@
     </div>
     
     <div class="center">
-        <h1>Welcome</h1>
+        <h1>Welcome{{data}}</h1>
     </div>
     
     <div>
         <div class="" style="width:1200px;height:1000px;padding-left:50px" >
-            <div class="border center" style="width:300px;height:1000px;float:left;">
+            <div class="border center" style="width:300px;height:860px;float:left;">
              <ul class="co2 ">
                 <li class=""><a href=""><h4>Collections</h4></a></li>
                 <li><a href="{{ url_for('laptop') }}"> Laptops</a></li>
@@ -48,12 +48,12 @@
             
             <div class="" style="width:800px;height:1000px;float:left;">
                  <div class ="border" style="text-align: center">
-                     <img src="{{url_for('static',filename='uploads/laptop/l3.png' )}}" alt="laptop picture" style="width:400px;height:400px;">
-                     <h6> Laptop </h6>
+                     <a href=" {{ url_for('laptop') }}"> <img src="{{url_for('static',filename='uploads/laptop/l3.png' )}}" alt="laptop picture" style="width:400px;height:400px;"> </a>
+                     <a href=" {{ url_for('laptop') }}"><h6> Laptop </h6></a>
                  </div>
                 <div class ="border" style="text-align: center">
-                     <img src="{{url_for('static',filename='uploads/Accessories/a3.png' )}}" alt="laptop accessories picture" style="width:400px;height:400px;">
-                     <h6> Accessories </h6>
+                     <a href=" {{ url_for('accessories') }} "><img src="{{url_for('static',filename='uploads/Accessories/a3.png' )}}" alt="laptop accessories picture" style="width:400px;height:400px;"></a>
+                     <a href=" {{ url_for('accessories') }} "> <h6> Accessories </h6> </a>
                 </div>
             </div>
         </div>
@@ -85,9 +85,9 @@
                 <div class="border bottombox">
                     <h4>NAVIGATION</h4>
                     <ul class="co2 ">
-                        <li><a href="">HOME</a></li>
-                        <li><a href="">PRODUCTS</a></li>
-                        <li><a href="">SEARCH</a></li>
+                        <li><a href="{{ url_for('home') }}">HOME</a></li>
+                        <li><a href="{{ url_for('laptop') }}">PRODUCTS</a></li>
+                        <li><a href="{{ url_for('home') }}">SEARCH</a></li>
                         <li><a href="{{ url_for('review') }}">BLOG</a></li>
                     </ul>
                 </div>
@@ -101,9 +101,9 @@
                 <div class="border bottombox">
                     <h4> CATALOG </h4>
                     <ul class="co2 ">
-                        <li><a href="">ACCESSORIES </a></li>
+                        <li><a href="{{ url_for('accessories') }}">ACCESSORIES </a></li>
                         <li><a href="">DESKTOPS </a></li>
-                        <li><a href="">LAPTOPS </a></li>
+                        <li><a href="{{ url_for('laptop') }}">LAPTOPS </a></li>
                         <li><a href="">LIGHTWEIGHT PCS </a></li>
                      </ul>
                 </div>
@@ -111,7 +111,7 @@
                     <h4>MY ACCOUNT</h4>
                     <ul class="co2 ">
                         <li><a href="{{ url_for('profile_page') }}">MY ACCOUNT </a></li>
-                        <li><a href="">MY CART </a></li>
+                        <li><a href="{{ url_for('cart') }}">MY CART </a></li>
                     </ul>
                 </div>
                 <div class="border bottombox">

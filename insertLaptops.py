@@ -26,8 +26,8 @@ if __name__ == '__main__':
     ##Laptop(model_id, model, brand, description, thumbnail)
     branchInsertLaptop = "INSERT INTO Laptop VALUES (%s, %s, %s, %s, %s)"
     
-    ##ModelStockInfo(model_id, amt_in_stock, amt_sold)
-    branchInsertModelStockInfo = "INSERT INTO ModelStockInfo VALUES (%s, %s, %s)"
+    ##ModelStockInfo(model_id, amt_in_stock)
+    branchInsertModelStockInfo = "INSERT INTO ModelStockInfo VALUES (%s, %s)"
     
     ##ModelItems(product_id, model_id)
     branchInsertModelItems = "INSERT INTO ModelItems VALUES (%s, %s)"
@@ -78,14 +78,12 @@ if __name__ == '__main__':
         branch2Cursor.execute(branchInsertLaptop, branchLaptopValues)
         branch3Cursor.execute(branchInsertLaptop, branchLaptopValues)
         
-        ##ModelStockInfo(model_id, amt_in_stock, amt_sold)
+        ##ModelStockInfo(model_id, amt_in_stock)
         amt_in_stock = random.randint(250,280)
         
-        branchModelStockInfoValues = (model_id, amt_in_stock, 0)
+        branchModelStockInfoValues = (model_id, amt_in_stock)
         
         branch1Cursor.execute(branchInsertModelStockInfo, branchModelStockInfoValues)
-        branch2Cursor.execute(branchInsertModelStockInfo, branchModelStockInfoValues)
-        branch3Cursor.execute(branchInsertModelStockInfo, branchModelStockInfoValues)
         
         for _ in range(amt_in_stock):
             
@@ -99,6 +97,15 @@ if __name__ == '__main__':
             branchModelItemsValues = (product_id1, model_id)
             
             branch1Cursor.execute(branchInsertModelItems, branchModelItemsValues)
+        
+        ##ModelStockInfo(model_id, amt_in_stock, amt_sold)
+        amt_in_stock = random.randint(250,280)
+        
+        branchModelStockInfoValues = (model_id, amt_in_stock)
+        
+        branch2Cursor.execute(branchInsertModelStockInfo, branchModelStockInfoValues)
+        
+        for _ in range(amt_in_stock):
             
             ##Branch2 item
             product_id2 = random.randint(1,2147483647)
@@ -110,6 +117,15 @@ if __name__ == '__main__':
             branchModelItemsValues = (product_id2, model_id)
             
             branch2Cursor.execute(branchInsertModelItems, branchModelItemsValues)
+        
+        ##ModelStockInfo(model_id, amt_in_stock, amt_sold)
+        amt_in_stock = random.randint(250,280)
+        
+        branchModelStockInfoValues = (model_id, amt_in_stock)
+        
+        branch3Cursor.execute(branchInsertModelStockInfo, branchModelStockInfoValues)
+        
+        for _ in range(amt_in_stock):
             
             ##Branch3 item
             product_id3 = random.randint(1,2147483647)
@@ -134,19 +150,19 @@ if __name__ == '__main__':
     if(compuStoreConnection.is_connected()):
         compuStoreCursor.close()
         compuStoreConnection.close()
-        print("MySQL compuStoreConnection is closed and %s laptops added." %k) 
+        print("MySQL compuStoreConnection is closed and %s laptop model added." %k) 
         
     if(branch1Connection.is_connected()):
         branch1Cursor.close()
         branch1Connection.close()
-        print("MySQL branch1Connection is closed and %s laptops added." %k) 
+        print("MySQL branch1Connection is closed and %s laptop model added." %k) 
         
     if(branch2Connection.is_connected()):
         branch2Cursor.close()
         branch2Connection.close()
-        print("MySQL branch2Connection is closed and %s laptops added." %k) 
+        print("MySQL branch2Connection is closed and %s laptop model added." %k) 
     
     if(branch3Connection.is_connected()):
         branch3Cursor.close()
         branch3Connection.close()
-        print("MySQL branch3Connection is closed and %s laptops added." %k) 
+        print("MySQL branch3Connection is closed and %s laptop model added." %k) 

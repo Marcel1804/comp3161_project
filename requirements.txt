@@ -11,7 +11,7 @@ MySQL
 flask_mysqldb
 Faker
 mysql-connector
-
+werkzeug
 
 # ----------------------
 # Production Server

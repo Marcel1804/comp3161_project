@@ -1,16 +1,34 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-  <span class="navbar-brand mb-0 h1">CompuStore</span>
+  <span class="navbar-brand mb-0 h1"> CompuStore </span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
-        <a class="nav-link" href="{{ url_for('home') }}">Home <span class="sr-only">(current)</span></a>
+        <li class="nav-item active">
+         <a class="nav-link" href="{{ url_for('home') }}">Home <span class="sr-only">(current)</span></a>
+        </li>
     </ul>
-    <ul class="navbar-nav">
-        <li><a class="nav-link" href="{{ url_for('login') }}"> LOG IN</a></li>
-        <li><a class="nav-link" href="{{ url_for('signup')}}"> CREATE AN ACCOUNT</a></li>
-        <li><a href="{{ url_for('checkout')}}"> CHECKOUT</a></li>
+    <ul class="navbar-nav ">
+       {% if current_user.is_authenticated %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          </li>
+       {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+          </li>
+       {% endif %}
+       
+       {% if current_user.is_authenticated %}
+        <li class="nav-item active">
+          <a href="{{ url_for('checkout')}}"> CHECKOUT</a>
+        </li>
+        {% else %}
+        <li class="nav-item active" >
+           <a class="nav-link" href="{{ url_for('signup')}}"> CREATE AN ACCOUNT</a>
+        </li>
+        {% endif %}
     </ul>
   </div>
 </nav>

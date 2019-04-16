@@ -3,9 +3,10 @@
 create database CompuStore;
 use CompuStore;
 
-/* CustomerAccount(acc_id, email, password,  fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on) */
+/* CustomerAccount(acc_id, username, email, password,  fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on) */
 create table CustomerAccount(
 	acc_id int auto_increment not null,
+	username varchar(100),
 	email varchar(100),
 	password varchar(255) not null,
 	fname varchar(30) not null,
@@ -125,8 +126,8 @@ create table Checkout(
 	foreign key(track_num) references Receipt(track_num) on DELETE cascade on UPDATE cascade
 );
 
-/* PurchasedItems(product_id, acc_id, br_id, cost, date_purchased) */
-create table PurchasedItems(
+/* CustomerPurchasedItems(product_id, acc_id, br_id, cost, date_purchased) */
+create table CustomerPurchasedItems(
 	product_id int not null,
 	acc_id int not null,
 	br_id varchar(50) not null,
@@ -135,6 +136,14 @@ create table PurchasedItems(
 	primary key(product_id),
 	foreign key(acc_id) references CustomerCart(acc_id) on DELETE cascade on UPDATE cascade,
 	foreign key(br_id) references Branch(br_id) on DELETE cascade on UPDATE cascade
+);
+
+/* PurchasedItems(product_id, acc_id, br_id, cost, date_purchased) */
+create table PurchasedItems(
+	product_id int not null,
+	model_id varchar(100) not null,
+	primary key(product_id),
+	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
 
 /* WriteReview(acc_id, model_id, rev_text, date_written) */
@@ -237,7 +246,6 @@ create table Laptop(
 create table ModelStockInfo(
 	model_id varchar(100)not null ,
 	amt_in_stock int not null,
-	amt_sold int not null,
 	primary key(model_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
@@ -259,7 +267,7 @@ RETURN (SELECT product_id FROM   ModelItems WHERE  model_id = @modelId LIMIT @am
 DELIMITER //
 	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), OUT prod_id INT)
 	BEGIN
-	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1), amt_sold = (amt_sold + 1) WHERE model_id like modelId;
+	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1) WHERE model_id like modelId;
 	
 	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId LIMIT 1;
 	DELETE FROM ItemsInStock WHERE product_id like prod_id;
@@ -286,7 +294,6 @@ create table Laptop(
 create table ModelStockInfo(
 	model_id varchar(100)not null ,
 	amt_in_stock int not null,
-	amt_sold int not null,
 	primary key(model_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
@@ -308,7 +315,7 @@ RETURN (SELECT product_id FROM   ModelItems WHERE  model_id = @modelId LIMIT @am
 DELIMITER //
 	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), OUT prod_id INT)
 	BEGIN
-	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1), amt_sold = (amt_sold + 1) WHERE model_id like modelId;
+	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1) WHERE model_id like modelId;
 	
 	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId LIMIT 1;
 	DELETE FROM ItemsInStock WHERE product_id like prod_id;
@@ -335,7 +342,6 @@ create table Laptop(
 create table ModelStockInfo(
 	model_id varchar(100)not null ,
 	amt_in_stock int not null,
-	amt_sold int not null,
 	primary key(model_id),
 	foreign key(model_id) references Laptop(model_id) on DELETE cascade on UPDATE cascade
 );
@@ -357,7 +363,7 @@ RETURN (SELECT product_id FROM   ModelItems WHERE  model_id = @modelId LIMIT @am
 DELIMITER //
 	CREATE PROCEDURE purchaseItem(IN modelId varchar(100), OUT prod_id INT)
 	BEGIN
-	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1), amt_sold = (amt_sold + 1) WHERE model_id like modelId;
+	UPDATE ModelStockInfo SET amt_in_stock = (amt_in_stock - 1) WHERE model_id like modelId;
 	
 	SELECT product_id into prod_id FROM ItemsInStock where model_id like modelId LIMIT 1;
 	DELETE FROM ItemsInStock WHERE product_id like prod_id;

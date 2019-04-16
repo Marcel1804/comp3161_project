@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
 {% block main %}
-<div>
-    <p> coming soon </p>
+<div class="center">
+<h1>Shopping Cart</h1>
 </div>
-
+<div class="left">
+<h3>It appears that your cart is currently empty</h3>
+</div>
+<div>
+   <a href="{{ url_for('home') }}">BROWSE COLLECTIONS TO FIND THE PRODUCTS YOU ARE INTERESTED</a> 
+</div>
 {% endblock %}

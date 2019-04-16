@@ -22,11 +22,15 @@ columns = {
 
 class databaseGenerator:
     def __init__(self, dbname, columns):
-        self.dbname   = dbname
-        self.column   = columns
-        self.mydb     = mysql.connector.connect(host="localhost", user="root", passwd="", database=dbname)
-        self.mycursor = self.mydb.cursor()
-
+        try:
+            self.dbname   = dbname
+            self.column   = columns
+            self.mydb     = mysql.connector.connect(host="localhost", user="root", passwd="", database=dbname)
+            self.mycursor = self.mydb.cursor()
+        
+        except mysql.connector.Error as error:
+            print("Unable to connect to database {}".format(error))
+        
     # attrib is a list of the arributes for the record, 
     # table is the string with the name of the table 
     #NB: if the datatype in the db is varchar the arrib
@@ -37,8 +41,8 @@ class databaseGenerator:
             strstatement  ="INSERT INTO "+str(name)+" "+ "".join(self.column[name])
             strstatement += ' VALUES({});'.format(','.join("{0}".format(x) for x in attrib))
             self.mycursor.execute(strstatement)
-        except:
-            print("Please check input for addRecord")
+        except mysql.connector.Error as error:
+            print("Please check addRecord {}".format(error))
 
     #key is the identifier of the value to be removed
     #name is the name of the table to removed the record form
@@ -50,8 +54,8 @@ class databaseGenerator:
             strstatement  = "DELETE FROM "+str(name)
             strstatement += " WHERE {} = {};".format(coltocompare, key)
             self.mycursor.execute(strstatement)
-        except:
-            print("Please check input for removeRecord")
+        except mysql.connector.Error as error:
+            print("Please check removeRecord {}".format(error))
 
     #name of table must be python string
     def showTableAll(self, tableName):
@@ -61,8 +65,8 @@ class databaseGenerator:
             self.mycursor.execute(strstatement)
             records = self.mycursor.fetchall()
             return records
-        except:
-            print("Please check input for showTableAll")
+        except mysql.connector.Error as error:
+            print("Please check showTableAll {}".format(error)) 
 
     #key must be quoted string if the datatype in the database is varchar or date
     #tableName - the name of the table to be updated
@@ -77,8 +81,8 @@ class databaseGenerator:
             self.mycursor.execute(strstatement)
             records = self.mycursor.fetchall()
             return records
-        except:
-            print("Please check input for showTableCondition")
+        except mysql.connector.Error as error:
+            print("Please check showTableCondition {}".format(error))
         
     #key must be quoted string if the datatype in the database is varchar or date
     #tableName - the name of the table to be updated
@@ -91,8 +95,8 @@ class databaseGenerator:
             strstatement = ""
             strstatement = "UPDATE {} SET {} = {} WHERE {} = {};".format(tableName, columntoupdate, value, idfn, key )
             self.mycursor.execute(strstatement)
-        except:
-            print("Pease check input for updateRecord")
+        except mysql.connector.Error as error:
+            print("Pease check updateRecord {}".format(error))
 
 
     #tableName - the name of the table to be updated
@@ -103,8 +107,8 @@ class databaseGenerator:
             strstatement = ""
             strstatement = "UPDATE {} SET {} = {};".format(tableName, column, value)
             self.mycursor.execute(strstatement)
-        except:
-            print("Please check input for updateTable")
+        except mysql.connector.Error as error:
+            print("Please check updateTable {}".format(error))
 
 
     def orderByPrice(self, ordr):
@@ -113,8 +117,8 @@ class databaseGenerator:
             self.mycursor.execute(strstatement)
             records = self.mycursor.fetchall()
             return records
-        except:
-            print("Please check input data type for orderByPrice")
+        except mysql.connector.Error as error:
+            print("Please check orderByPrice {}".format(error)) 
 
     
     def getByName(self, name):
@@ -123,8 +127,8 @@ class databaseGenerator:
             self.mycursor.execute(strstatement)
             records = self.mycursor.fetchall()
             return records
-        except:
-            print("Please check input data type for getByName")
+        except mysql.connector.Error as error:
+            print("Please check input data type for getByName {}".format(error))
 
 
     def getByModel(self, model):
@@ -133,8 +137,8 @@ class databaseGenerator:
             self.mycursor.execute(strstatement)
             records = self.mycursor.fetchall()
             return records
-        except:
-            print("Please check input data type for getByModel")
+        except mysql.connector.Error as error:
+            print("Please check getByModel {}".format(error))
 
 
     def getByBrand(self, brand):
@@ -143,9 +147,18 @@ class databaseGenerator:
             self.mycursor.execute(strstatement)
             records = self.mycursor.fetchall()
             return records
-        except:
-            print("Please check input data type for getByBrand")
-
+        except mysql.connector.Error as error:
+            print("Please check getByBrand {}".format(error))
+            
+    #PROCEDURE for addPurchasedItem(argument int, argument int, argument varchar, argument double ) 
+    def addPurchasedItem(self, arg1, arg2, arg3, arg4):
+        try:
+            strstatement = "CALL addPurchasedItem({}, {}, \"{}\", {} );".format(arg1, arg2, arg3, arg4)
+            self.mycursor.execute(strstatement)
+        except mysql.connector.Error as error:
+            print("Please check addPurchasedItem {}".format(error))
+            
+            
     #destructor closes database and connection
     def __del__(self): 
         self.mycursor.close()

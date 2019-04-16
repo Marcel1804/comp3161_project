@@ -1,11 +1,16 @@
 from faker import Faker
+fake=Faker()
+
+from werkzeug.security import generate_password_hash, check_password_hash 
+
 import mysql.connector
 from mysql.connector import Error
 from mysql.connector import errorcode
+
 import random
-#import sqlGen
+import sqlController
 from recordGenerator import getGender
-fake=Faker()
+
 
 
 def phoneNumber():
@@ -48,17 +53,45 @@ def insertCusAcc(times):
        connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
        cursor = connection.cursor(prepared=True)
         
-       for _ in range(0,times):
+       for _ in range(times):
            gen=gender[random.randint(0,1)]
            sql_insert_data_query="INSERT INTO CustomerAccount(email,password,fname,lname,gender,date_of_birth,street,city,parish,telephone,created_on) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-
            if gen=='Male':
-               insert_tuple=(fake.email(), fake.password(),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"))
+               insert_tuple=(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"))
+           else:
+               insert_tuple=(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_female(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today") )
+               
+           cursor.execute(sql_insert_data_query,insert_tuple)
+       connection.commit() 
+       print ("Date Record inserted successfully into CustomerAccount table")
+    except mysql.connector.Error as error :
+        print("Failed inserting date object into MySQL table {}".format(error))
+    finally:
+        #closing database connection.
+        if(connection.is_connected()):
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed") 
+            
+#CustomerAccount(acc_id, email, password, fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
+def updateCusAcc(start,end):
+    try:
+       connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
+       cursor = connection.cursor(prepared=True)
+        
+       for i in range(start,end):
+           gen=gender[random.randint(0,1)]
+           sql_insert_data_query=""
+           #sql_insert_data_query="INSERT INTO CustomerAccount(email,password,fname,lname,gender,date_of_birth,street,city,parish,telephone,created_on) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+           if gen=='Male':
+               #insert_tuple=(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"))
+               sql_insert_data_query="UPDATE CustomerAccount set email='{}', password ='{}', fname='{}', lname='{}', gender='{}', date_of_birth='{}', street='{}', city='{}', parish='{}', telephone ='{}', created_on='{}' where acc_id ={}".format(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"),i)
 
            else:
-               insert_tuple=(fake.email(), fake.password(),fake.first_name_female(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today") )
-
-           cursor.execute( sql_insert_data_query, insert_tuple)
+               #insert_tuple=(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_female(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today") )
+               sql_insert_data_query="UPDATE CustomerAccount set email='{}', password ='{}', fname='{}', lname='{}', gender='{}', date_of_birth='{}', street='{}', city='{}', parish='{}', telephone ='{}', created_on='{}' where acc_id ={}".format(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_female(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"),i)
+           print(sql_insert_data_query)
+           cursor.execute(sql_insert_data_query)
            
        connection.commit() 
        print ("Date Record inserted successfully into CustomerAccount table")
@@ -88,7 +121,6 @@ def insertCard(start,end):
             card=cardNum()
             sql_insert_data_query="INSERT INTO CreditCardDetails(card_num,name_on_card,card_security_code,expiration_month,expiration_year,billing_street,billing_city,billing_parish) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
             insert_tuple=(card,name,cardSC(),fake.month(),year(),result[3].decode(),result[4].decode(),result[5].decode())
-            print(card,name,cardSC(),fake.month(),year(),result[3].decode(),result[4].decode(),result[5].decode())
             cursor.execute( sql_insert_data_query,insert_tuple)
 
             # insert data into the CustomerCreditCard table
@@ -106,25 +138,86 @@ def insertCard(start,end):
             cursor.close()
             connection.close()
             print("MySQL connection is closed")
-    
+#CreditCardDetails(card_num,name_on_card,card_security_code,expiration_month, expiration_year, billing_street, billing_city, billing_parish)
+#CustomerCreditCard(acc_id, card_num)
+def insertCard(start,end):
+    try:
+        connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
+        cursor = connection.cursor(prepared=True)
+        for i in range(start,end):
+            # fetching information about customer from CustomerAccount table 
+            cursor.execute("SELECT acc_id, fname, lname, street, city, parish FROM CompuStore.CustomerAccount where acc_id={}".format(i))
+            result = cursor.fetchone()
+            name=result[1].decode()+" "+result[2].decode()
 
-# Branch(br_id, name, street, city, thumbnail, telephone)
-# def insertBranch(start, end):
-#     parish = ["Kingston", "St Andrew", "Clarendon", "St Catherine", "Portland", 
-#                 "St Thomas", "Hannover", "Westmoreland", "St Ann", "St Mary", 
-#                 "St Elizabeth", "Trelawny", "St James", "Manchester" ]
-#     for i in range(num):
-#         now = datetime.datetime.now() 
-#         brid = "'"+str(int(now.second))+str(int(now.microsecond))+"'"
-#         p = random.choice(parish)
-#         name = "\"{}Branch\"".format(p)
-#         fake  = Faker()
-#         fake = fake.address()
-#         street = fake.split(',')[0]
-#         phone = "'"+phoneNumber()+"'"
-#         #city = 
-#     conn = sqlController.databaseGenerator("CompuStore")
-#     conn.addRecord([brid, name, street, city, p, phone], "Branch")
+            # insert data into the CreditCardDetail table
+            card=cardNum()
+            sql_insert_data_query="INSERT INTO CreditCardDetails(card_num,name_on_card,card_security_code,expiration_month,expiration_year,billing_street,billing_city,billing_parish) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+            insert_tuple=(card,name,cardSC(),fake.month(),year(),result[3].decode(),result[4].decode(),result[5].decode())
+            cursor.execute( sql_insert_data_query,insert_tuple)
+
+            # insert data into the CustomerCreditCard table
+            sql_insert_data_query="INSERT INTO CustomerCreditCard(acc_id,card_num) VALUES (%s,%s)"
+            insert_tuple=(result[0],card)
+            cursor.execute( sql_insert_data_query,insert_tuple)
+            
+        connection.commit() 
+        print ("Date Record inserted successfully CreditCardDetails and CustomerCreditCard into tables")
+    except mysql.connector.Error as error :
+        print("Failed inserting date object into MySQL table {}".format(error))
+    finally:
+        #closing database connection.
+        if(connection.is_connected()):
+            cursor.close()
+            connection.close()
+            print("MySQL connection is closed")  
+            
+            
+#Branch(br_id, name, street, city, parish, telephone)
+def insertBranch(start, end):
+    for i in range(num):
+        now = datetime.datetime.now() 
+        brid = "'{}'".format(str(i) + str(int(now.microsecond)))
+        p = random.choice(parish)
+        name = "\"{}Branch\"".format(p)
+        fake = fake.address()
+        street = fake.split(',')[0]
+        phone = "'{}'".format(phoneNumber())
+        city = "'{}'".format(fake.city())
+    conn = sqlController.databaseGenerator("CompuStore", sqlController.columns)
+    conn.addRecord([brid, name, street, city, p, phone], "Branch")
+    
+    
+#procedure calls
+#PROCEDURE for orderByPrice(argument varchar) 
+def orderByPrice(ordr):
+    conn = sqlController.databaseGenerator("CompuStore", sqlController.columns)
+    records = conn.orderByPrice(ordr)
+    return records
+
+'''
+def getByName(name):
+    conn = sqlController.databaseGenerator("CompuStore", sqlController.columns)
+    records = conn.getByName(name)
+    return records
+'''
+
+#PROCEDURE for getByModel(argument varchar) 
+def getByModel(model):
+    conn = sqlController.databaseGenerator("CompuStore", sqlController.columns)
+    records = conn.getByModel(model)
+    return records
+    
+#PROCEDURE for getByBrand(argument varchar)
+def getByBrand(brand):
+    conn = sqlController.databaseGenerator("CompuStore", sqlController.columns)
+    records = conn.getByBrand(brand)
+    return records
+    
+#PROCEDURE for addPurchasedItem(argument int, argument int, argument varchar, argument double )  
+def addPurchasedItem(arg1, arg2, arg3, arg4):
+    conn = sqlController.databaseGenerator("CompuStore", sqlController.columns)
+    conn.addPurchasedItem(arg1, arg2, arg3, arg4)
 
 # Laptop(model_num, model, brand, description, thumbnail, price)
 
