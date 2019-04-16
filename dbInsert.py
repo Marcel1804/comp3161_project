@@ -47,7 +47,7 @@ def cardSC():
 # use to populate the CustomerAccount table in the CompuStoreDB 
 gender=['Male','Female']
 parish = ['Portland','St Mary','St Thomas','St Ann','Kingston','St Andrew','St Catherine','St Jame','Manchester','Hanover','Clarendon','Westmoreland','Trelawny','St Elizabeth']
-#CustomerAccount(acc_id, email, password, fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
+#CustomerAccount(acc_id,username, email, password, fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
 def insertCusAcc(times):
     try:
        connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
@@ -55,11 +55,17 @@ def insertCusAcc(times):
         
        for _ in range(times):
            gen=gender[random.randint(0,1)]
-           sql_insert_data_query="INSERT INTO CustomerAccount(email,password,fname,lname,gender,date_of_birth,street,city,parish,telephone,created_on) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+           sql_insert_data_query="INSERT INTO CustomerAccount(username,email,password,fname,lname,gender,date_of_birth,street,city,parish,telephone,created_on) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
            if gen=='Male':
-               insert_tuple=(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"))
+               lname= fake.last_name()
+               fname= fake.first_name_male()
+               name = lname+","+ fname
+               insert_tuple=(name,fake.email(),generate_password_hash(fake.password(),"sha256"),fname,lname,gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"))
            else:
-               insert_tuple=(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_female(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today") )
+               lname= fake.last_name()
+               fname= fake.first_name_female()
+               name = lname+","+ fname
+               insert_tuple=(name,fake.email(),generate_password_hash(fake.password(),"sha256"),fname,lname,gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today") )
                
            cursor.execute(sql_insert_data_query,insert_tuple)
        connection.commit() 

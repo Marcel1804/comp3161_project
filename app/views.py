@@ -4,6 +4,7 @@ from forms import LoginForm, SignupForm, Creditcard, Search, UploadForm
 from werkzeug.security import check_password_hash,generate_password_hash
 from flask_login import login_user, logout_user, current_user, login_required
 import os
+import datetime
 from werkzeug.utils import secure_filename
 
 import mysql.connector
@@ -110,19 +111,19 @@ def signup():
         telephone= form.telephone.data
         password = form.password.data
         confirmpassword = form.confirmpassword.data
+        created_on=datetime.datetime.now()
          
         print(username,firstname,lastname,email,gender,dof,street,city,parish,telephone,password,confirmpassword)
         CompuStore = mysql_main.connection.cursor()
-        CompuStore.execute("select * from CustomerAccount where acc_id=0")#.format(username))
+        CompuStore.execute("select * from CustomerAccount where username = '{}'".format(username))
         user = CompuStore.fetchone()
+        print(user)
         print(dof[1],len(dof))
         # if user is None :
-        #     #todo add user to database
-        #     if password == confirmpassword:
-        #         if dof.len()==
-        #         user=UserProfile(first_name=firstname,last_name=lastname,username=username,password=password)
-        #         db.session.add(user)
-        #         db.session.commit()
+        # sql_insert_data_query= "INSERT INTO CustomerAccount(username,email,password,fname,lname,gender,date_of_birth,street,city,parish,telephone,created_on) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".formate(username,email,generate_password_hash(password,"sha256"),firstname,lastname,gender,dof,street,city,parish,telephone,created_on)
+        
+        #         CompuStore.execute(sql_insert_data_query)
+        #         CompuStore.commit() 
         #         flash('Sign-up was successfully.', 'success')
 
     #             next_page = request.args.get('next')
