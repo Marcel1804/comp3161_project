@@ -11,7 +11,7 @@ if __name__ == '__main__':
     compuStoreConnection = mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
     compuStoreCursor = compuStoreConnection.cursor(prepared=True)
     
-    ##Laptop(model_id, model, brand, description, thumbnail, price)
+    ##LaptopModel(model_id, model, brand, description, thumbnail, price)
     compustoreInsertLaptop = "INSERT INTO Laptop VALUES (%s, %s, %s, %s, %s, %s)"
    
     branch1Connection = mysql.connector.connect(host="localhost", user="root", password="", database="Branch1")
@@ -23,14 +23,14 @@ if __name__ == '__main__':
     branch3Connection = mysql.connector.connect(host="localhost", user="root", password="", database="Branch3")
     branch3Cursor = branch3Connection.cursor(prepared=True)
     
-    ##Laptop(model_id, model, brand, description, thumbnail)
+    ##LaptopModel(model_id, model, brand, description, thumbnail)
     branchInsertLaptop = "INSERT INTO Laptop VALUES (%s, %s, %s, %s, %s)"
     
     ##ModelStockInfo(model_id, amt_in_stock)
     branchInsertModelStockInfo = "INSERT INTO ModelStockInfo VALUES (%s, %s)"
     
-    ##ModelItems(product_id, model_id)
-    branchInsertModelItems = "INSERT INTO ModelItems VALUES (%s, %s)"
+    ##ModelItem(model_id, product_id)
+    branchInsertModelItem = "INSERT INTO ModelItem VALUES (%s, %s)"
     
     pID = set()
     mID = set()
@@ -66,12 +66,12 @@ if __name__ == '__main__':
 
         price = float(line[9]) * 130.00
         
-        ##Laptop(model_id, model, brand, description, thumbnail, price)
+        ##LaptopModel(model_id, model, brand, description, thumbnail, price)
         compuStoreLaptopValues = (model_id, model, brand, description, thumbnail, price)
         
         compuStoreCursor.execute(compustoreInsertLaptop, compuStoreLaptopValues)
         
-        ##Laptop(model_id, model, brand, description, thumbnail)
+        ##LaptopModel(model_id, model, brand, description, thumbnail)
         branchLaptopValues = (model_id, model, brand, description, thumbnail)
         
         branch1Cursor.execute(branchInsertLaptop, branchLaptopValues)
@@ -93,10 +93,10 @@ if __name__ == '__main__':
                 product_id1 = random.randint(1,2147483647)
             pID.add(product_id1)
             
-            ##ModelItems(product_id, model_id)
-            branchModelItemsValues = (product_id1, model_id)
+            ##ModelItem(model_id, product_id)
+            branchModelItemValues = (model_id, product_id1)
             
-            branch1Cursor.execute(branchInsertModelItems, branchModelItemsValues)
+            branch1Cursor.execute(branchInsertModelItem, branchModelItemValues)
         
         ##ModelStockInfo(model_id, amt_in_stock, amt_sold)
         amt_in_stock = random.randint(250,280)
@@ -113,10 +113,10 @@ if __name__ == '__main__':
                 product_id2 = random.randint(1,2147483647)
             pID.add(product_id2)
             
-            ##ModelItems(product_id, model_id)
-            branchModelItemsValues = (product_id2, model_id)
+            ##ModelItem(model_id, product_id)
+            branchModelItemValues = (model_id, product_id2)
             
-            branch2Cursor.execute(branchInsertModelItems, branchModelItemsValues)
+            branch2Cursor.execute(branchInsertModelItem, branchModelItemValues)
         
         ##ModelStockInfo(model_id, amt_in_stock, amt_sold)
         amt_in_stock = random.randint(250,280)
@@ -133,10 +133,10 @@ if __name__ == '__main__':
                 product_id3 = random.randint(1,2147483647)
             pID.add(product_id3)
             
-            ##ModelItems(product_id, model_id)
-            branchModelItemsValues = (product_id3, model_id)
+            ##ModelItem(model_id, product_id)
+            branchModelItemValues = (model_id, product_id3)
             
-            branch3Cursor.execute(branchInsertModelItems, branchModelItemsValues)
+            branch3Cursor.execute(branchInsertModelItem, branchModelItemValues)
     
         k+=1
         compuStoreConnection.commit()

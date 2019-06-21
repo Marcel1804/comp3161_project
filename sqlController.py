@@ -159,6 +159,24 @@ class databaseGenerator:
             print("Please check addPurchasedItem {}".format(error))
             
             
+     def getBranchByCount(self, column, colkey, condition):
+        try:
+            strstatement = "SELECT COUNT(*) FROM {} WHERE {} LIKE '%{}%';".format(column, colkey, condition)
+            self.mycursor.execute(strstatement)
+            records = self.mycursor.fetchall()
+            return records
+        except mysql.connector.Error as error:
+            print("Please check getBranchByCount {}".format(error))
+
+    def getBranchCount(self, column, colkey):
+        try:
+            strstatement = "SELECT COUNT(*) FROM {};".format(column, colkey)
+            self.mycursor.execute(strstatement)
+            records = self.mycursor.fetchall()
+            return records
+        except mysql.connector.Error as error:
+            print("Please check getBranchByCount {}".format(error))
+            
     #destructor closes database and connection
     def __del__(self): 
         self.mycursor.close()

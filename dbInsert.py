@@ -47,7 +47,7 @@ def cardSC():
 # use to populate the CustomerAccount table in the CompuStoreDB 
 gender=['Male','Female']
 parish = ['Portland','St Mary','St Thomas','St Ann','Kingston','St Andrew','St Catherine','St Jame','Manchester','Hanover','Clarendon','Westmoreland','Trelawny','St Elizabeth']
-#CustomerAccount(acc_id,username, email, password, fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
+#CustomerAccount(account_id,username, email, password, fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
 def insertCusAcc(times):
     try:
        connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
@@ -79,7 +79,7 @@ def insertCusAcc(times):
             connection.close()
             print("MySQL connection is closed") 
             
-#CustomerAccount(acc_id, email, password, fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
+#CustomerAccount(account_id, email, password, fname, lname, gender, date_of_birth, street, city, parish, telephone, created_on)
 def updateCusAcc(start,end):
     try:
        connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
@@ -91,11 +91,11 @@ def updateCusAcc(start,end):
            #sql_insert_data_query="INSERT INTO CustomerAccount(email,password,fname,lname,gender,date_of_birth,street,city,parish,telephone,created_on) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
            if gen=='Male':
                #insert_tuple=(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"))
-               sql_insert_data_query="UPDATE CustomerAccount set email='{}', password ='{}', fname='{}', lname='{}', gender='{}', date_of_birth='{}', street='{}', city='{}', parish='{}', telephone ='{}', created_on='{}' where acc_id ={}".format(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"),i)
+               sql_insert_data_query="UPDATE CustomerAccount set email='{}', password ='{}', fname='{}', lname='{}', gender='{}', date_of_birth='{}', street='{}', city='{}', parish='{}', telephone ='{}', created_on='{}' where account_id ={}".format(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_male(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"),i)
 
            else:
                #insert_tuple=(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_female(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today") )
-               sql_insert_data_query="UPDATE CustomerAccount set email='{}', password ='{}', fname='{}', lname='{}', gender='{}', date_of_birth='{}', street='{}', city='{}', parish='{}', telephone ='{}', created_on='{}' where acc_id ={}".format(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_female(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"),i)
+               sql_insert_data_query="UPDATE CustomerAccount set email='{}', password ='{}', fname='{}', lname='{}', gender='{}', date_of_birth='{}', street='{}', city='{}', parish='{}', telephone ='{}', created_on='{}' where account_id ={}".format(fake.email(),generate_password_hash(fake.password(),"sha256"),fake.first_name_female(),fake.last_name(),gen,fake.date_of_birth(tzinfo=None, minimum_age=18, maximum_age=50),fake.street_address(),fake.city(),parish[random.randint(0,13)],phoneNumber(),fake.date_between(start_date="-10y", end_date="today"),i)
            print(sql_insert_data_query)
            cursor.execute(sql_insert_data_query)
            
@@ -112,14 +112,14 @@ def updateCusAcc(start,end):
 
 ## use to populate the CreditCardDetails table and CustomerCeditCard in the CompuStoreDB
 #CreditCardDetails(card_num,name_on_card,card_security_code,expiration_month, expiration_year, billing_street, billing_city, billing_parish)
-#CustomerCreditCard(acc_id, card_num)
+#CustomerCreditCard(account_id, card_num)
 def insertCard(start,end):
     try:
         connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
         cursor = connection.cursor(prepared=True)
         for i in range(start,end):
             # fetching information about customer from CustomerAccount table 
-            cursor.execute("SELECT acc_id, fname, lname, street, city, parish FROM CompuStore.CustomerAccount where acc_id={}".format(i))
+            cursor.execute("SELECT account_id, fname, lname, street, city, parish FROM CompuStore.CustomerAccount where account_id={}".format(i))
             result = cursor.fetchone()
             name=result[1].decode()+" "+result[2].decode()
 
@@ -130,7 +130,7 @@ def insertCard(start,end):
             cursor.execute( sql_insert_data_query,insert_tuple)
 
             # insert data into the CustomerCreditCard table
-            sql_insert_data_query="INSERT INTO CustomerCreditCard(acc_id,card_num) VALUES (%s,%s)"
+            sql_insert_data_query="INSERT INTO CustomerCreditCard(account_id,card_num) VALUES (%s,%s)"
             insert_tuple=(result[0],card)
             cursor.execute( sql_insert_data_query,insert_tuple)
             
@@ -145,14 +145,14 @@ def insertCard(start,end):
             connection.close()
             print("MySQL connection is closed")
 #CreditCardDetails(card_num,name_on_card,card_security_code,expiration_month, expiration_year, billing_street, billing_city, billing_parish)
-#CustomerCreditCard(acc_id, card_num)
+#CustomerCreditCard(account_id, card_num)
 def insertCard(start,end):
     try:
         connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
         cursor = connection.cursor(prepared=True)
         for i in range(start,end):
             # fetching information about customer from CustomerAccount table 
-            cursor.execute("SELECT acc_id, fname, lname, street, city, parish FROM CompuStore.CustomerAccount where acc_id={}".format(i))
+            cursor.execute("SELECT account_id, fname, lname, street, city, parish FROM CompuStore.CustomerAccount where account_id={}".format(i))
             result = cursor.fetchone()
             name=result[1].decode()+" "+result[2].decode()
 
@@ -163,7 +163,7 @@ def insertCard(start,end):
             cursor.execute( sql_insert_data_query,insert_tuple)
 
             # insert data into the CustomerCreditCard table
-            sql_insert_data_query="INSERT INTO CustomerCreditCard(acc_id,card_num) VALUES (%s,%s)"
+            sql_insert_data_query="INSERT INTO CustomerCreditCard(account_id,card_num) VALUES (%s,%s)"
             insert_tuple=(result[0],card)
             cursor.execute( sql_insert_data_query,insert_tuple)
             
@@ -179,9 +179,9 @@ def insertCard(start,end):
             print("MySQL connection is closed")  
             
             
-#Branch(br_id, name, street, city, parish, telephone)
-def insertBranch(start, end):
-    for i in range(num):
+#Branch(branch_id, name, street, city, parish, telephone)
+def insertBranch():
+    for i in range(3):
         now = datetime.datetime.now() 
         brid = "'{}'".format(str(i) + str(int(now.microsecond)))
         p = random.choice(parish)
@@ -224,14 +224,34 @@ def getByBrand(brand):
 def addPurchasedItem(arg1, arg2, arg3, arg4):
     conn = sqlController.databaseGenerator("CompuStore", sqlController.columns)
     conn.addPurchasedItem(arg1, arg2, arg3, arg4)
+    
+    
+def chooseBranch(ordr):
+    largest = None
+
+    b1 = sqlController.databaseGenerator("Branch1", sqlController.columns)
+    b2 = sqlController.databaseGenerator("Branch2", sqlController.columns)
+    b3 = sqlController.databaseGenerator("Branch3", sqlController.columns)
+    
+    a = (b1.getBranchCount("ModelStockInfo", "amt_in_stock", ordr), b1.dbname)
+    b = (b2.getBranchCount("ModelStockInfo", "amt_in_stock", ordr), b2.dbname)
+    c = (b3.getBranchCount("ModelStockInfo", "amt_in_stock", ordr), b3.dbname)
+
+    if (a[0][0][0] > b[0][0][0]) and (a[0][0][0] > c[0][0][0]):
+        largest = a
+    elif (b[0][0][0] > a[0][0][0]) and (b[0][0][0] > c[0][0][0]):
+        largest = b
+    else:
+        largest = c
+    return (largest[0][0], largest[1])
 
 # Laptop(model_num, model, brand, description, thumbnail, price)
 
-# CustomerCart(acc_id, item_count, value)
+# CustomerCart(account_id, item_count, value)
 
-# CartItems(acc_id, model_id, br_id, quantity, cost,date_added)
+# CartItems(account_id, model_id, branch_id, quantity, cost,date_added)
 
-# Warehouse(wh_id, street, city, parish, telephone)
+# Warehouse(warehouse_id, street, city, parish, telephone)
 def insertWarehouse(times):
     try:
         connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
@@ -252,7 +272,7 @@ def insertWarehouse(times):
             connection.close()
             print("MySQL connection is closed") 
  
-# WarehouseStock(wh_id, model_id, quantity) need editing
+# WarehouseStock(warehouse_id, model_id, quantity) need editing
 # def insertWaresStock(start,end):
 #     try:
 #         connection= mysql.connector.connect(host="localhost", user="root", password="", database="CompuStore")
@@ -275,11 +295,11 @@ def insertWarehouse(times):
 
 # Receipt(track_num, invoice)
 
-# Checkout(acc_id, track_num, total_cost, transaction_date)
+# Checkout(account_id, track_num, total_cost, transaction_date)
 
-# PurchasedItem(product_id,acc_id,br_id, quantity, cost, date_purchased)
+# PurchasedItem(product_id,account_id,branch_id, quantity, cost, date_purchased)
 
-# WriteReview(acc_id,model_id, rev_text, date_written)
+# WriteReview(account_id,model_id, rev_text, date_written)
 
 #Branches Database
 #Laptop(model_id, model, brand, description, thumbnail) 

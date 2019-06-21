@@ -1,4 +1,4 @@
-from app import app, mysql_main,login_manager  # use to connect to the main databases CompuStore
+from app import app, mysql_main#, login_manager  # use to connect to the main databases CompuStore
 from flask import render_template, request, redirect, url_for, url_for, flash, session, abort
 from forms import LoginForm, SignupForm, Creditcard, Search, UploadForm
 from werkzeug.security import check_password_hash,generate_password_hash
@@ -56,10 +56,9 @@ def login():
     #     username = form.username.data
     #     password = form.password.data
 
-    #     # user = UserProfile.query.filter_by(username=username, password=password)\
-    #     # .first()
-    #     # or
-    #     user = UserProfile.query.filter_by(username=username).first()
+    #    CompuStore = mysql_main.connection.cursor()
+    #    CompuStore.execute("select * from CustomerAccount where username = '{}'".format(username))
+    #    user = CompuStore.fetchone()
         
     #     if user is not None and check_password_hash(user.password, password):
     #         remember_me = False
@@ -113,26 +112,23 @@ def signup():
         confirmpassword = form.confirmpassword.data
         created_on=datetime.datetime.now()
          
-        print(username,firstname,lastname,email,gender,dof,street,city,parish,telephone,password,confirmpassword)
+        print(username,firstname,lastname,email,gender,dof,street,city,parish,telephone,password,created_on)
         CompuStore = mysql_main.connection.cursor()
         CompuStore.execute("select * from CustomerAccount where username = '{}'".format(username))
         user = CompuStore.fetchone()
         print(user)
         print(dof[1],len(dof))
         # if user is None :
-        # sql_insert_data_query= "INSERT INTO CustomerAccount(username,email,password,fname,lname,gender,date_of_birth,street,city,parish,telephone,created_on) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".formate(username,email,generate_password_hash(password,"sha256"),firstname,lastname,gender,dof,street,city,parish,telephone,created_on)
-        
-        #         CompuStore.execute(sql_insert_data_query)
+        # sql_insert_data_query= "INSERT INTO CustomerAccount(username,email,password,fname,lname,gender,date_of_birth,street,city,parish,telephone,created_on) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".formate(username,email,generate_password_hash(password,"sha256"),firstname,lastname,gender,dof,street,city,parish,telephone,created_on)        #         CompuStore.execute(sql_insert_data_query)
         #         CompuStore.commit() 
         #         flash('Sign-up was successfully.', 'success')
-
     #             next_page = request.args.get('next')
     #             login_user(user)
-    #             return redirect(next_page or url_for('home'))
-    #         else:
-    #             flash("Password and Confirmpassword don't match", 'danger')
-                
+    #             return redirect(next_page or url_for('creditCard'))
+    #         
     #     elif user is not None:
+    #         if street!= and city!= and parish !=:
+    #     else:
     #          flash("already a member", 'danger')
     #          return redirect(url_for('login'))
              
